@@ -1,0 +1,9 @@
+language: csharp
+solution: shortid.sln
+mono:
+  - 4.0.0
+install:
+  - nuget restore shortid.sln
+  - cd ../../bolorundurowb/shortid
+script:
+  - xbuild /p:Configuration=Release shortid.sln
