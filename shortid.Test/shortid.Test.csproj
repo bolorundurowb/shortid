@@ -45,6 +45,12 @@
     <Compile Include="ShortId.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\shortid\shortid.csproj">
+      <Project>{49D7DE0E-34FF-4B17-A411-054479D62B18}</Project>
+      <Name>shortid</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

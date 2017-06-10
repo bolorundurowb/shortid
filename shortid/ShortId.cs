@@ -4,11 +4,11 @@ namespace shortid
 {
     public class ShortId
     {
-        private static Random _random = new Random();
-        private const string capitals = "ABCDEFGHIJKLMNOPQRSTUVWXY";
-        private const string smalls = "abcdefghjlkmnopqrstuvwxyz";
-        private const string numbers = "0123456789";
-        private const string specials = "-_";
+        private static readonly Random Random = new Random();
+        private const string Capitals = "ABCDEFGHIJKLMNOPQRSTUVWXY";
+        private const string Smalls = "abcdefghjlkmnopqrstuvwxyz";
+        private const string Numbers = "0123456789";
+        private const string Specials = "-_";
         
         /// <summary>
         /// Generates a random string of varying length
@@ -18,7 +18,7 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers = false, bool useSpecial = true)
         {
-            int length = _random.Next(7, 15);
+            int length = Random.Next(7, 15);
             return Generate(useNumbers, useSpecial, length);
         }
 
@@ -31,20 +31,20 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers, bool useSpecial, int length)
         {
-            string pool = $"{capitals}{smalls}";
+            string pool = $"{Capitals}{Smalls}";
             if (useNumbers)
             {
-                pool += numbers;
+                pool += Numbers;
             }
             if (useSpecial)
             {
-                pool += specials;
+                pool += Specials;
             }
             
             string output = string.Empty;
             for (int i = 0; i < length; i++)
             {
-                int charIndex = _random.Next(0, pool.Length);
+                int charIndex = Random.Next(0, pool.Length);
                 output += pool[charIndex];
             }
             return output;
