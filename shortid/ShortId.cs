@@ -9,12 +9,23 @@ namespace shortid
         private const string smalls = "abcdefghjlkmnopqrstuvwxyz";
         private const string numbers = "0123456789";
         
+        /// <summary>
+        /// Generates a random string of varying length
+        /// </summary>
+        /// <param name="useNumbers">Whether or not to include numbers</param>
+        /// <returns>A random string</returns>
         public static string Generate(bool useNumbers = false)
         {
             int length = _random.Next(7, 15);
             return Generate(useNumbers, length);
         }
 
+        /// <summary>
+        /// Generates a random string of a specified length
+        /// </summary>
+        /// <param name="useNumbers">Whether or not numbers are included in the string</param>
+        /// <param name="length">The length of the generated string</param>
+        /// <returns>A random string</returns>
         public static string Generate(bool useNumbers, int length)
         {
             string pool = $"{capitals}{smalls}";
