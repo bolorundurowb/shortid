@@ -40,7 +40,7 @@ namespace shortid
             {
                 pool += Specials;
             }
-            
+
             string output = string.Empty;
             for (int i = 0; i < length; i++)
             {
@@ -48,6 +48,16 @@ namespace shortid
                 output += pool[charIndex];
             }
             return output;
-         }
+        }
+
+        /// <summary>
+        /// Generates a random string of a specified length
+        /// </summary>
+        /// <param name="length">The length of the generated string</param>
+        /// <returns>A random string</returns>
+        public static string Generate(int length)
+        {
+            return Generate(false, true, length);
+        }
     }
 }
