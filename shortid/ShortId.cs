@@ -63,9 +63,10 @@ namespace shortid
 
         public static void SetCharacters(string characters)
         {
-            if (characters.Length < 15)
+            characters = characters.Remove(' ');
+            if (characters.Length < 20)
             {
-                throw new InvalidOperationException("");
+                throw new InvalidOperationException("The replacement characters must be at least 20 letters in length and without spaces.");
             }
             _pool = characters;
         }
