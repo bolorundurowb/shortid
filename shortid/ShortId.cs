@@ -10,7 +10,7 @@ namespace shortid
         private const string Numbers = "0123456789";
         private const string Specials = "-_";
         private static string _pool = $"{Smalls}{Capitals}";
-        
+
         /// <summary>
         /// Generates a random string of varying length
         /// </summary>
@@ -68,10 +68,18 @@ namespace shortid
         /// <exception cref="InvalidOperationException">Thrown when the new character set is less than 20 characters</exception>
         public static void SetCharacters(string characters)
         {
-            characters = characters.Remove(' ');
+            if (string.IsNullOrWhiteSpace(characters))
+            {
+                throw new ArgumentException("The replacement characters must not be null or empty.");
+            }
+            if (characters.Contains(" "))
+            {
+                characters = characters.Replace(" ", "");
+            }
             if (characters.Length < 20)
             {
-                throw new InvalidOperationException("The replacement characters must be at least 20 letters in length and without spaces.");
+                throw new InvalidOperationException(
+                    "The replacement characters must be at least 20 letters in length and without spaces.");
             }
             _pool = characters;
         }
