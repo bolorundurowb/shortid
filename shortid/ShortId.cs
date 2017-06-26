@@ -24,7 +24,7 @@ namespace shortid
         }
 
         /// <summary>
-        /// Generates a random string of a specified length
+        /// Generates a random string of a specified length with the option to add numbers and special characters
         /// </summary>
         /// <param name="useNumbers">Whether or not numbers are included in the string</param>
         /// <param name="useSpecial">Whether or not special characters are included</param>
@@ -61,6 +61,11 @@ namespace shortid
             return Generate(false, true, length);
         }
 
+        /// <summary>
+        /// Changes the character set that id's are generated from
+        /// </summary>
+        /// <param name="characters">The new character set</param>
+        /// <exception cref="InvalidOperationException">Thrown when the new character set is less than 20 characters</exception>
         public static void SetCharacters(string characters)
         {
             characters = characters.Remove(' ');
@@ -71,11 +76,18 @@ namespace shortid
             _pool = characters;
         }
 
+        /// <summary>
+        /// Sets the seed that the random generator works with.
+        /// </summary>
+        /// <param name="seed">The seed for the random number generator</param>
         public static void SetSeed(int seed)
         {
             _random = new Random(seed);
         }
 
+        /// <summary>
+        /// Resets the random number generator and character set
+        /// </summary>
         public static void Reset()
         {
             _random = new Random();
