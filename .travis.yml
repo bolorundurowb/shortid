@@ -9,4 +9,4 @@ script:
   - xbuild /p:Configuration=Debug shortid.sln
 after_success:
   - nuget install NUnit.Runners -Version 3.4.1
-  - mono ./NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./shortid.Test/bin/Debug/shortid.Tests.dll
+  - mono ./NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./shortid.Test/bin/Debug/shortid.Test.dll
