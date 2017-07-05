@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 
 namespace shortid.Test
@@ -40,6 +41,41 @@ namespace shortid.Test
             string id = null;
             id = ShortId.Generate(false, true, 8);
             Assert.AreEqual(id.Length, 8);
+        }
+
+        [Test]
+        public void SetSeedThrowsWhenCharacterSetIsEmptyOrNull()
+        {
+            string seed = String.Empty;
+            Assert.Throws<ArgumentException>(delegate
+            {
+                ShortId.SetCharacters(seed);
+            });
+        }
+
+        [Test]
+        public void SetSeedThrowsWhenCharacterSetIsLessThan20Characters()
+        {
+            string seed = "783ujrcuei039kj4";
+            Assert.Throws<InvalidOperationException>(delegate
+            {
+                ShortId.SetCharacters(seed);
+            });
+        }
+
+        [Test]
+        public void ResetIsStable()
+        {
+            Assert.DoesNotThrow(ShortId.Reset);
+        }
+
+        [Test]
+        public void SetSeedIsStable()
+        {
+            Assert.DoesNotThrow(delegate
+            {
+                ShortId.Generate(0);
+            });
         }
     }
 }
