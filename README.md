@@ -7,6 +7,7 @@
 A csharp library to generate completely random short id's. they can be used as primary keys or unique identifiers. This library is different in that you can specify the length of the id's generated.
 
 ## How to use
+
 To make use of the `shortid`, add it to your project via the Nuget package manager UI or console via this command:
 
 ```
@@ -57,3 +58,32 @@ string id = ShortId.Generate(true, false, 12);
 ```
 
 **NOTE: when specifying the desired length, shorter lengths increase the possibility thata duplicate id would be generated**
+
+
+## Customize ShortId
+
+`ShortId` has several features that help with customizing the ids generated. Characters sets can be introduced and the random number generator can be seeded.
+
+To change the character set in use, run the following:
+
+```csharp
+string characters = //whatever you want;
+ShortId.SetCharacters(characters);
+```
+
+**NOTE: the new character set must number `null`, an empty string or whitespace. Also, all whitespace characters would be removed, finally the character set cannot be less than 20 characters.**
+
+`ShortId` also allows the seed for the random number generator to be set.
+
+To set the seed, run the following:
+
+```csharp
+int seed = 1939048828;
+ShortId.SetSeed(seed);
+```
+
+Finally, `ShortId` allows for all customizations to be reset using the following:
+
+```csharp
+ShortId.Reset();
+```

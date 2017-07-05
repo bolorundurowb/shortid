@@ -72,10 +72,13 @@ namespace shortid
             {
                 throw new ArgumentException("The replacement characters must not be null or empty.");
             }
-            if (characters.Contains(" "))
-            {
-                characters = characters.Replace(" ", "");
-            }
+            
+            characters = characters
+                .Replace(" ", "")
+                .Replace("\t", "")
+                .Replace("\n", "")
+                .Replace("\r", "");
+            
             if (characters.Length < 20)
             {
                 throw new InvalidOperationException(
