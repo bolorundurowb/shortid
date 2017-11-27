@@ -1,12 +1,7 @@
 language: csharp
-solution: shortid.sln
-mono:
-  - latest
-install:
-  - nuget restore shortid.sln
-  - cd ../../bolorundurowb/shortid
+mono: none
+dotnet: 2.0.3
+dist: trusty
 script:
-  - xbuild /p:Configuration=Debug shortid.sln
-after_success:
-  - nuget install NUnit.Runners -Version 3.4.1
-  - mono ./NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./shortid.Test/bin/Debug/shortid.Test.dll
+ - dotnet restore
+ - dotnet test shortid.Test
