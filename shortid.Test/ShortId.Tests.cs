@@ -1,81 +1,91 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 
 namespace shortid.Test
 {
-    [TestFixture]
     public class ShortIdTests
     {
-        [Test]
+        [Fact]
         public void GenerateIsStable()
         {
             string id = string.Empty;
-            Assert.DoesNotThrow(delegate
+            Action action = () =>
             {
                 id = ShortId.Generate();
-            });
-            Assert.IsNotEmpty(id);
+            };
+            action.ShouldNotThrow();
+            id.Should().NotBeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void GenerateCreatesIdsWithoutNumbers()
         {
             string id = null;
             id = ShortId.Generate(false);
-            Assert.IsFalse(id.Any(char.IsDigit));
+            id.Any(char.IsDigit).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void GenerateCreatesIdsWithoutSpecialCharacters()
         {
             string id = null;
             id = ShortId.Generate(true, false);
             var ans = new[] {"-", "_"}.Any(x => id.Contains(x));
-            Assert.IsFalse(ans); 
+            ans.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void GenerateCreatesIdsOfASpecifiedLength()
         {
             string id = null;
             id = ShortId.Generate(false, true, 8);
-            Assert.AreEqual(id.Length, 8);
+            id.Length.Should().Be(8);
         }
 
-        [Test]
+        [Fact]
         public void SetSeedThrowsWhenCharacterSetIsEmptyOrNull()
         {
             string seed = String.Empty;
-            Assert.Throws<ArgumentException>(delegate
+            Action action = () =>
             {
                 ShortId.SetCharacters(seed);
-            });
+            };
+            action.ShouldThrow<ArgumentException>()
+                .WithMessage("The replacement characters must not be null or empty.");
         }
 
-        [Test]
+        [Fact]
         public void SetSeedThrowsWhenCharacterSetIsLessThan20Characters()
         {
             string seed = "783ujrcuei039kj4";
-            Assert.Throws<InvalidOperationException>(delegate
+            Action action = () =>
             {
                 ShortId.SetCharacters(seed);
-            });
+            };
+            action.ShouldThrow<InvalidOperationException>()
+                .WithMessage("The replacement characters must be at least 20 letters in length and without spaces.");
         }
 
-        [Test]
+        [Fact]
         public void ResetIsStable()
         {
-            Assert.DoesNotThrow(ShortId.Reset);
+            Action action = () =>
+            {
+                ShortId.Reset();
+            };
+            action.ShouldNotThrow();
         }
 
-        [Test]
+        [Fact]
         public void SetSeedIsStable()
         {
-            Assert.DoesNotThrow(delegate
+            Action action = () =>
             {
                 ShortId.Generate(0);
-            });
+            };
+            action.ShouldNotThrow();
         }
     }
 }
