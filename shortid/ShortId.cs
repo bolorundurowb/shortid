@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace shortid
 {
@@ -32,23 +33,25 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers, bool useSpecial, int length)
         {
-            string pool = _pool;
+            StringBuilder poolBuilder = new StringBuilder(_pool);
             if (useNumbers)
             {
-                pool = Numbers + pool;
+                poolBuilder.Append(Numbers);
             }
             if (useSpecial)
             {
-                pool += Specials;
+                poolBuilder.Append(Specials);
             }
 
-            string output = string.Empty;
+            string pool = poolBuilder.ToString();
+            
+            char[] output = new char[length];
             for (int i = 0; i < length; i++)
             {
                 int charIndex = _random.Next(0, pool.Length);
-                output += pool[charIndex];
+                output[i] =  pool[charIndex];
             }
-            return output;
+            return new string(output);
         }
 
         /// <summary>
