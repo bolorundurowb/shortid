@@ -5,11 +5,11 @@ namespace shortid
     public class ShortId
     {
         private static Random _random = new Random();
-        private const string Capitals = "ABCDEFGHIJKLMNOPQRSTUVWXY";
+        private const string Bigs = "ABCDEFGHIJKLMNOPQRSTUVWXY";
         private const string Smalls = "abcdefghjlkmnopqrstuvwxyz";
         private const string Numbers = "0123456789";
         private const string Specials = "-_";
-        private static string _pool = $"{Smalls}{Capitals}";
+        private static string _pool = $"{Smalls}{Bigs}";
 
         /// <summary>
         /// Generates a random string of varying length
@@ -102,7 +102,7 @@ namespace shortid
         public static void Reset()
         {
             _random = new Random();
-            _pool = $"{Smalls}{Capitals}";
+            _pool = $"{Smalls}{Bigs}";
         }
     }
 }
