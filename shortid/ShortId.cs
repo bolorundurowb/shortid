@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Text;
 
 namespace shortid
 {
     public class ShortId
     {
         private static Random _random = new Random();
-        private const string Capitals = "ABCDEFGHIJKLMNOPQRSTUVWXY";
+        private const string Bigs = "ABCDEFGHIJKLMNOPQRSTUVWXY";
         private const string Smalls = "abcdefghjlkmnopqrstuvwxyz";
         private const string Numbers = "0123456789";
         private const string Specials = "-_";
-        private static string _pool = $"{Smalls}{Capitals}";
+        private static string _pool = $"{Smalls}{Bigs}";
 
         /// <summary>
         /// Generates a random string of varying length
@@ -32,23 +33,25 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers, bool useSpecial, int length)
         {
-            string pool = _pool;
+            StringBuilder poolBuilder = new StringBuilder(_pool);
             if (useNumbers)
             {
-                pool = Numbers + pool;
+                poolBuilder.Append(Numbers);
             }
             if (useSpecial)
             {
-                pool += Specials;
+                poolBuilder.Append(Specials);
             }
 
-            string output = string.Empty;
+            string pool = poolBuilder.ToString();
+            
+            char[] output = new char[length];
             for (int i = 0; i < length; i++)
             {
                 int charIndex = _random.Next(0, pool.Length);
-                output += pool[charIndex];
+                output[i] =  pool[charIndex];
             }
-            return output;
+            return new string(output);
         }
 
         /// <summary>
@@ -102,7 +105,7 @@ namespace shortid
         public static void Reset()
         {
             _random = new Random();
-            _pool = $"{Smalls}{Capitals}";
+            _pool = $"{Smalls}{Bigs}";
         }
     }
 }

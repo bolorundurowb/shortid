@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;net45;net40</TargetFrameworks>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Copyright>Copyright 2017</Copyright>
     <PackageLicenseUrl>https://github.com/bolorundurowb/shortid/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/bolorundurowb/shortid/</PackageProjectUrl>
     <PackageIconUrl>https://members.orcid.org/sites/default/files/vector_iD_icon.svg</PackageIconUrl>
     <RepositoryUrl>https://github.com/bolorundurowb/shortid/</RepositoryUrl>
     <PackageTags>shortid short id databse key primarykey mongodb sql</PackageTags>
-    <PackageReleaseNotes>Move the library to NET Standard</PackageReleaseNotes>
+    <PackageReleaseNotes>Add memory optimizing changes</PackageReleaseNotes>
     <Authors>Bolorunduro Winner-Timothy</Authors>
     <Description>A library that generates random Id's from 7 to 14 characters. Id's generated can be used as primary keys for databases or unique identifiers</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
