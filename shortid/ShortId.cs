@@ -3,17 +3,21 @@ using System.Text;
 
 namespace shortid
 {
-    public class ShortId
+    public static class ShortId
     {
+        // app variables
         private static Random _random = new Random();
         private const string Bigs = "ABCDEFGHIJKLMNOPQRSTUVWXY";
         private const string Smalls = "abcdefghjlkmnopqrstuvwxyz";
         private const string Numbers = "0123456789";
         private const string Specials = "-_";
         private static string _pool = $"{Smalls}{Bigs}";
+        
+        // thread management variables
+        private static readonly object threadLock = new object();
 
         /// <summary>
-        /// Generates a random string of varying length
+        /// Generates a random string of varying length with special characters and without numbers 
         /// </summary>
         /// <param name="useNumbers">Whether or not to include numbers</param>
         /// <param name="useSpecial">Whether or not special characters are included</param>
@@ -33,7 +37,21 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers, bool useSpecial, int length)
         {
-            StringBuilder poolBuilder = new StringBuilder(_pool);
+            if (length < 7)
+            {
+                throw new ArgumentException($"The specified length of {length} is less than the lower limit of 7.");
+            }
+            
+            string __pool;
+            Random rand;
+            
+            lock (threadLock)
+            {
+                __pool = _pool;
+                rand = _random;
+            }
+            
+            StringBuilder poolBuilder = new StringBuilder(__pool);
             if (useNumbers)
             {
                 poolBuilder.Append(Numbers);
@@ -48,14 +66,14 @@ namespace shortid
             char[] output = new char[length];
             for (int i = 0; i < length; i++)
             {
-                int charIndex = _random.Next(0, pool.Length);
+                int charIndex = rand.Next(0, pool.Length);
                 output[i] =  pool[charIndex];
             }
             return new string(output);
         }
 
         /// <summary>
-        /// Generates a random string of a specified length
+        /// Generates a random string of a specified length with special characetrs and without numbers
         /// </summary>
         /// <param name="length">The length of the generated string</param>
         /// <returns>A random string</returns>
@@ -76,18 +94,21 @@ namespace shortid
                 throw new ArgumentException("The replacement characters must not be null or empty.");
             }
             
-            characters = characters
-                .Replace(" ", "")
-                .Replace("\t", "")
-                .Replace("\n", "")
-                .Replace("\r", "");
+            var stringBuilder = new StringBuilder();
+            foreach (var character in characters)
+            {
+                if (!char.IsWhiteSpace(character)) {
+                    stringBuilder.Append(character);
+                }
+            }
             
-            if (characters.Length < 20)
+            if (stringBuilder.Length < 20)
             {
                 throw new InvalidOperationException(
-                    "The replacement characters must be at least 20 letters in length and without spaces.");
+                    "The replacement characters must be at least 20 letters in length and without whitespace.");
             }
-            _pool = characters;
+            
+            _pool = stringBuilder.ToString();
         }
 
         /// <summary>
@@ -96,7 +117,10 @@ namespace shortid
         /// <param name="seed">The seed for the random number generator</param>
         public static void SetSeed(int seed)
         {
-            _random = new Random(seed);
+            lock (threadLock)
+            {
+                _random = new Random(seed);
+            }
         }
 
         /// <summary>
@@ -104,8 +128,11 @@ namespace shortid
         /// </summary>
         public static void Reset()
         {
-            _random = new Random();
-            _pool = $"{Smalls}{Bigs}";
+            lock (threadLock)
+            {
+                _random = new Random();
+                _pool = $"{Smalls}{Bigs}";
+            }
         }
     }
 }
