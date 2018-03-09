@@ -14,9 +14,7 @@ namespace shortid
         private static string _pool = $"{Smalls}{Bigs}";
         
         // thread management variables
-        private static object seedLock = new object();
-        private static object resetLock = new object();
-        private static object generateLock = new object();
+        private static object threadLock = new object();
 
         /// <summary>
         /// Generates a random string of varying length
@@ -39,7 +37,7 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers, bool useSpecial, int length)
         {
-            lock (generateLock)
+            lock (threadLock)
             {
                 StringBuilder poolBuilder = new StringBuilder(_pool);
                 if (useNumbers)
@@ -105,7 +103,7 @@ namespace shortid
         /// <param name="seed">The seed for the random number generator</param>
         public static void SetSeed(int seed)
         {
-            lock (seedLock)
+            lock (threadLock)
             {
                 _random = new Random(seed);
             }
@@ -116,7 +114,7 @@ namespace shortid
         /// </summary>
         public static void Reset()
         {
-            lock (resetLock)
+            lock (threadLock)
             {
                 _random = new Random();
                 _pool = $"{Smalls}{Bigs}";
