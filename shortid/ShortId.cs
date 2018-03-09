@@ -37,28 +37,34 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers, bool useSpecial, int length)
         {
+            string __pool;
+            Random rand;
+            
             lock (threadLock)
             {
-                StringBuilder poolBuilder = new StringBuilder(_pool);
-                if (useNumbers)
-                {
-                    poolBuilder.Append(Numbers);
-                }
-                if (useSpecial)
-                {
-                    poolBuilder.Append(Specials);
-                }
-
-                string pool = poolBuilder.ToString();
-            
-                char[] output = new char[length];
-                for (int i = 0; i < length; i++)
-                {
-                    int charIndex = _random.Next(0, pool.Length);
-                    output[i] =  pool[charIndex];
-                }
-                return new string(output);
+                __pool = _pool;
+                rand = _random;
             }
+            
+            StringBuilder poolBuilder = new StringBuilder(__pool);
+            if (useNumbers)
+            {
+                poolBuilder.Append(Numbers);
+            }
+            if (useSpecial)
+            {
+                poolBuilder.Append(Specials);
+            }
+
+            string pool = poolBuilder.ToString();
+            
+            char[] output = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                int charIndex = rand.Next(0, pool.Length);
+                output[i] =  pool[charIndex];
+            }
+            return new string(output);
         }
 
         /// <summary>
