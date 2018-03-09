@@ -14,6 +14,7 @@ namespace shortid
         private static string _pool = $"{Smalls}{Bigs}";
         
         // thread management variables
+        private static object seedLock = new object();
         private static object resetLock = new object();
         private static object generateLock = new object();
 
@@ -104,7 +105,10 @@ namespace shortid
         /// <param name="seed">The seed for the random number generator</param>
         public static void SetSeed(int seed)
         {
-            _random = new Random(seed);
+            lock (seedLock)
+            {
+                _random = new Random(seed);
+            }
         }
 
         /// <summary>
