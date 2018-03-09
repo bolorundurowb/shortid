@@ -4,7 +4,7 @@
 
 ## About ShortId
 
-A csharp library to generate completely random short id's. they can be used as primary keys or unique identifiers. This library is different in that you can specify the length of the id's generated. I have tested the application generating 200000 ids without duplicates.
+A csharp library to generate completely random short id's. they can be used as primary keys or unique identifiers. This library is different in that you can specify the length of the id's generated. I have tested the application generating 180000 id's without duplicates.
 
 ## How to use
 
@@ -57,7 +57,7 @@ string id = ShortId.Generate(true, false, 12);
 // id = VvoCDPazES_w
 ```
 
-**NOTE: when specifying the desired length, shorter lengths increase the possibility thata duplicate id would be generated**
+**NOTE: v2.0.0 introduced a change that prevents lengths of less than 7**
 
 
 ## Customize ShortId
@@ -71,7 +71,7 @@ string characters = //whatever you want;
 ShortId.SetCharacters(characters);
 ```
 
-**NOTE: the new character set must number `null`, an empty string or whitespace. Also, all whitespace characters would be removed, finally the character set cannot be less than 20 characters.**
+**NOTE: the new character set must not be `null`, an empty string or whitespace. Also, all whitespace characters would be removed, finally the character set cannot be less than 20 characters.**
 
 `ShortId` also allows the seed for the random number generator to be set.
 
