@@ -14,7 +14,7 @@ namespace shortid
         private static string _pool = $"{Smalls}{Bigs}";
         
         // thread management variables
-        private static object threadLock = new object();
+        private static readonly object threadLock = new object();
 
         /// <summary>
         /// Generates a random string of varying length
@@ -37,6 +37,11 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers, bool useSpecial, int length)
         {
+            if (length < 7)
+            {
+                throw new ArgumentException($"The specified length of {length} is less than the lower limit of 7.");
+            }
+            
             string __pool;
             Random rand;
             
@@ -89,18 +94,21 @@ namespace shortid
                 throw new ArgumentException("The replacement characters must not be null or empty.");
             }
             
-            characters = characters
-                .Replace(" ", "")
-                .Replace("\t", "")
-                .Replace("\n", "")
-                .Replace("\r", "");
+            var stringBuilder = new StringBuilder();
+            foreach (var character in characters)
+            {
+                if (!char.IsWhiteSpace(character)) {
+                    stringBuilder.Append(character);
+                }
+            }
             
-            if (characters.Length < 20)
+            if (stringBuilder.Length < 20)
             {
                 throw new InvalidOperationException(
-                    "The replacement characters must be at least 20 letters in length and without spaces.");
+                    "The replacement characters must be at least 20 letters in length and without whitespace.");
             }
-            _pool = characters;
+            
+            _pool = stringBuilder.ToString();
         }
 
         /// <summary>
