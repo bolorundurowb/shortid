@@ -17,7 +17,7 @@ namespace shortid
         private static readonly object threadLock = new object();
 
         /// <summary>
-        /// Generates a random string of varying length
+        /// Generates a random string of varying length with special characters and without numbers 
         /// </summary>
         /// <param name="useNumbers">Whether or not to include numbers</param>
         /// <param name="useSpecial">Whether or not special characters are included</param>
@@ -73,7 +73,7 @@ namespace shortid
         }
 
         /// <summary>
-        /// Generates a random string of a specified length
+        /// Generates a random string of a specified length with special characetrs and without numbers
         /// </summary>
         /// <param name="length">The length of the generated string</param>
         /// <returns>A random string</returns>

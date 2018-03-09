@@ -8,7 +8,7 @@ namespace shortid.Test
     public class ShortIdTests
     {
         [Fact]
-        public void GenerateIsStable()
+        public void generatedWithoutExceptions()
         {
             string id = string.Empty;
             Action action = () =>
@@ -65,7 +65,7 @@ namespace shortid.Test
                 ShortId.SetCharacters(seed);
             };
             action.ShouldThrow<InvalidOperationException>()
-                .WithMessage("The replacement characters must be at least 20 letters in length and without spaces.");
+                .WithMessage("The replacement characters must be at least 20 letters in length and without whitespace.");
         }
 
         [Fact]
@@ -79,13 +79,14 @@ namespace shortid.Test
         }
 
         [Fact]
-        public void SetSeedIsStable()
+        public void DoesNotAllowLengthsLessThan7()
         {
             Action action = () =>
             {
-                ShortId.Generate(0);
+                ShortId.Generate(6);
             };
-            action.ShouldNotThrow();
+            action.ShouldThrowExactly<ArgumentException>()
+                .WithMessage("The specified length of 6 is less than the lower limit of 7.");
         }
     }
 }
