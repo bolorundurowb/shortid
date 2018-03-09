@@ -3,14 +3,19 @@ using System.Text;
 
 namespace shortid
 {
-    public class ShortId
+    public static class ShortId
     {
+        // app variables
         private static Random _random = new Random();
         private const string Bigs = "ABCDEFGHIJKLMNOPQRSTUVWXY";
         private const string Smalls = "abcdefghjlkmnopqrstuvwxyz";
         private const string Numbers = "0123456789";
         private const string Specials = "-_";
         private static string _pool = $"{Smalls}{Bigs}";
+        
+        // thread management variables
+        private static object resetLock = new object();
+        private static object generateLock = new object();
 
         /// <summary>
         /// Generates a random string of varying length
@@ -33,25 +38,28 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers, bool useSpecial, int length)
         {
-            StringBuilder poolBuilder = new StringBuilder(_pool);
-            if (useNumbers)
+            lock (generateLock)
             {
-                poolBuilder.Append(Numbers);
-            }
-            if (useSpecial)
-            {
-                poolBuilder.Append(Specials);
-            }
+                StringBuilder poolBuilder = new StringBuilder(_pool);
+                if (useNumbers)
+                {
+                    poolBuilder.Append(Numbers);
+                }
+                if (useSpecial)
+                {
+                    poolBuilder.Append(Specials);
+                }
 
-            string pool = poolBuilder.ToString();
+                string pool = poolBuilder.ToString();
             
-            char[] output = new char[length];
-            for (int i = 0; i < length; i++)
-            {
-                int charIndex = _random.Next(0, pool.Length);
-                output[i] =  pool[charIndex];
+                char[] output = new char[length];
+                for (int i = 0; i < length; i++)
+                {
+                    int charIndex = _random.Next(0, pool.Length);
+                    output[i] =  pool[charIndex];
+                }
+                return new string(output);
             }
-            return new string(output);
         }
 
         /// <summary>
@@ -104,8 +112,11 @@ namespace shortid
         /// </summary>
         public static void Reset()
         {
-            _random = new Random();
-            _pool = $"{Smalls}{Bigs}";
+            lock (resetLock)
+            {
+                _random = new Random();
+                _pool = $"{Smalls}{Bigs}";
+            }
         }
     }
 }
