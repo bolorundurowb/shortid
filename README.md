@@ -4,7 +4,7 @@
 
 ## About ShortId
 
-A csharp library to generate completely random short id's. they can be used as primary keys or unique identifiers. This library is different in that you can specify the length of the id's generated. I have tested the application generating 180000 id's without duplicates.
+A CSharp library to generate completely random short id's. They can be used as primary keys or unique identifiers. This library is different in that you can specify the length of the id's generated. I have tested the application generating 180000 id's without duplicates.
 
 ## How to use
 
