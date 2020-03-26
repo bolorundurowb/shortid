@@ -12,9 +12,9 @@ namespace shortid
         private const string Numbers = "0123456789";
         private const string Specials = "-_";
         private static string _pool = $"{Smalls}{Bigs}";
-        
+
         // thread management variables
-        private static readonly object threadLock = new object();
+        private static readonly object ThreadLock = new object();
 
         /// <summary>
         /// Generates a random string of varying length with special characters and without numbers 
@@ -24,7 +24,7 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers = false, bool useSpecial = true)
         {
-            int length = _random.Next(7, 15);
+            var length = _random.Next(7, 15);
             return Generate(useNumbers, useSpecial, length);
         }
 
@@ -41,34 +41,36 @@ namespace shortid
             {
                 throw new ArgumentException($"The specified length of {length} is less than the lower limit of 7.");
             }
-            
-            string __pool;
+
+            string characterPool;
             Random rand;
-            
-            lock (threadLock)
+
+            lock (ThreadLock)
             {
-                __pool = _pool;
+                characterPool = _pool;
                 rand = _random;
             }
-            
-            StringBuilder poolBuilder = new StringBuilder(__pool);
+
+            var poolBuilder = new StringBuilder(characterPool);
             if (useNumbers)
             {
                 poolBuilder.Append(Numbers);
             }
+
             if (useSpecial)
             {
                 poolBuilder.Append(Specials);
             }
 
-            string pool = poolBuilder.ToString();
-            
-            char[] output = new char[length];
-            for (int i = 0; i < length; i++)
+            var pool = poolBuilder.ToString();
+
+            var output = new char[length];
+            for (var i = 0; i < length; i++)
             {
-                int charIndex = rand.Next(0, pool.Length);
-                output[i] =  pool[charIndex];
+                var charIndex = rand.Next(0, pool.Length);
+                output[i] = pool[charIndex];
             }
+
             return new string(output);
         }
 
@@ -93,21 +95,22 @@ namespace shortid
             {
                 throw new ArgumentException("The replacement characters must not be null or empty.");
             }
-            
+
             var stringBuilder = new StringBuilder();
             foreach (var character in characters)
             {
-                if (!char.IsWhiteSpace(character)) {
+                if (!char.IsWhiteSpace(character))
+                {
                     stringBuilder.Append(character);
                 }
             }
-            
+
             if (stringBuilder.Length < 20)
             {
                 throw new InvalidOperationException(
                     "The replacement characters must be at least 20 letters in length and without whitespace.");
             }
-            
+
             _pool = stringBuilder.ToString();
         }
 
@@ -117,7 +120,7 @@ namespace shortid
         /// <param name="seed">The seed for the random number generator</param>
         public static void SetSeed(int seed)
         {
-            lock (threadLock)
+            lock (ThreadLock)
             {
                 _random = new Random(seed);
             }
@@ -128,7 +131,7 @@ namespace shortid
         /// </summary>
         public static void Reset()
         {
-            lock (threadLock)
+            lock (ThreadLock)
             {
                 _random = new Random();
                 _pool = $"{Smalls}{Bigs}";
