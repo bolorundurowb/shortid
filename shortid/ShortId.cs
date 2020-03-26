@@ -24,7 +24,7 @@ namespace shortid
         /// <returns>A random string</returns>
         public static string Generate(bool useNumbers = false, bool useSpecial = true)
         {
-            int length = _random.Next(7, 15);
+            var length = _random.Next(7, 15);
             return Generate(useNumbers, useSpecial, length);
         }
 
@@ -51,7 +51,7 @@ namespace shortid
                 rand = _random;
             }
             
-            StringBuilder poolBuilder = new StringBuilder(__pool);
+            var poolBuilder = new StringBuilder(__pool);
             if (useNumbers)
             {
                 poolBuilder.Append(Numbers);
@@ -61,12 +61,12 @@ namespace shortid
                 poolBuilder.Append(Specials);
             }
 
-            string pool = poolBuilder.ToString();
+            var pool = poolBuilder.ToString();
             
-            char[] output = new char[length];
-            for (int i = 0; i < length; i++)
+            var output = new char[length];
+            for (var i = 0; i < length; i++)
             {
-                int charIndex = rand.Next(0, pool.Length);
+                var charIndex = rand.Next(0, pool.Length);
                 output[i] =  pool[charIndex];
             }
             return new string(output);
