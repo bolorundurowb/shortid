@@ -42,16 +42,16 @@ namespace shortid
                 throw new ArgumentException($"The specified length of {length} is less than the lower limit of 7.");
             }
             
-            string __pool;
+            string characterPool;
             Random rand;
             
             lock (ThreadLock)
             {
-                __pool = _pool;
+                characterPool = _pool;
                 rand = _random;
             }
             
-            var poolBuilder = new StringBuilder(__pool);
+            var poolBuilder = new StringBuilder(characterPool);
             if (useNumbers)
             {
                 poolBuilder.Append(Numbers);
