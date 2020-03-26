@@ -11,10 +11,7 @@ namespace shortid.Test
         public void GeneratedWithoutExceptions()
         {
             var id = string.Empty;
-            Action action = () =>
-            {
-                id = ShortId.Generate();
-            };
+            Action action = () => { id = ShortId.Generate(); };
             action.Should().NotThrow();
             id.Should().NotBeEmpty();
         }
@@ -45,10 +42,7 @@ namespace shortid.Test
         public void SetSeedThrowsWhenCharacterSetIsEmptyOrNull()
         {
             var seed = string.Empty;
-            Action action = () =>
-            {
-                ShortId.SetCharacters(seed);
-            };
+            Action action = () => { ShortId.SetCharacters(seed); };
             action.Should().Throw<ArgumentException>()
                 .WithMessage("The replacement characters must not be null or empty.");
         }
@@ -57,33 +51,34 @@ namespace shortid.Test
         public void SetSeedThrowsWhenCharacterSetIsLessThan20Characters()
         {
             const string seed = "783ujrcuei039kj4";
-            Action action = () =>
-            {
-                ShortId.SetCharacters(seed);
-            };
+            Action action = () => { ShortId.SetCharacters(seed); };
             action.Should().Throw<InvalidOperationException>()
-                .WithMessage("The replacement characters must be at least 20 letters in length and without whitespace.");
-        }
-
-        [Fact]
-        public void ResetIsStable()
-        {
-            Action action = () =>
-            {
-                ShortId.Reset();
-            };
-            action.Should().NotThrow();
+                .WithMessage(
+                    "The replacement characters must be at least 20 letters in length and without whitespace.");
         }
 
         [Fact]
         public void DoesNotAllowLengthsLessThan7()
         {
-            Action action = () =>
-            {
-                ShortId.Generate(6);
-            };
+            Action action = () => { ShortId.Generate(6); };
             action.Should().ThrowExactly<ArgumentException>()
                 .WithMessage("The specified length of 6 is less than the lower limit of 7.");
+        }
+
+        [Fact]
+        public void ShouldResetInternalStateWithoutProblems()
+        {
+            Action action = () => { ShortId.Reset(); };
+            action.Should().NotThrow();
+        }
+
+        [Fact]
+        public void ShouldAllowForACustomSeed()
+        {
+            Action action = () => { ShortId.SetSeed(678309202); };
+
+            action.Should()
+                .NotThrow<Exception>();
         }
     }
 }

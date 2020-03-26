@@ -3,6 +3,12 @@ mono: none
 dotnet: 2.2.207
 dist: xenial
 install:
- - dotnet restore
+  - dotnet restore
 script:
- - dotnet test shortid.Test
+  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover shortid.Test/shortid.Test.csproj
+after_success:
+  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
+  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
+  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
+  - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools
+  - ./tools/csmacnz.Coveralls --opencover -i ./shortid.Test/coverage.opencover.xml --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName "travis-ci" --useRelativePaths
