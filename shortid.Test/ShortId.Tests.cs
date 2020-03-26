@@ -8,9 +8,9 @@ namespace shortid.Test
     public class ShortIdTests
     {
         [Fact]
-        public void generatedWithoutExceptions()
+        public void GeneratedWithoutExceptions()
         {
-            string id = string.Empty;
+            var id = string.Empty;
             Action action = () =>
             {
                 id = ShortId.Generate();
@@ -22,16 +22,14 @@ namespace shortid.Test
         [Fact]
         public void GenerateCreatesIdsWithoutNumbers()
         {
-            string id = null;
-            id = ShortId.Generate(false);
+            var id = ShortId.Generate(false);
             id.Any(char.IsDigit).Should().BeFalse();
         }
 
         [Fact]
         public void GenerateCreatesIdsWithoutSpecialCharacters()
         {
-            string id = null;
-            id = ShortId.Generate(true, false);
+            var id = ShortId.Generate(true, false);
             var ans = new[] {"-", "_"}.Any(x => id.Contains(x));
             ans.Should().BeFalse();
         }
@@ -39,15 +37,14 @@ namespace shortid.Test
         [Fact]
         public void GenerateCreatesIdsOfASpecifiedLength()
         {
-            string id = null;
-            id = ShortId.Generate(false, true, 8);
+            var id = ShortId.Generate(false, true, 8);
             id.Length.Should().Be(8);
         }
 
         [Fact]
         public void SetSeedThrowsWhenCharacterSetIsEmptyOrNull()
         {
-            string seed = String.Empty;
+            var seed = string.Empty;
             Action action = () =>
             {
                 ShortId.SetCharacters(seed);
@@ -59,7 +56,7 @@ namespace shortid.Test
         [Fact]
         public void SetSeedThrowsWhenCharacterSetIsLessThan20Characters()
         {
-            string seed = "783ujrcuei039kj4";
+            const string seed = "783ujrcuei039kj4";
             Action action = () =>
             {
                 ShortId.SetCharacters(seed);
