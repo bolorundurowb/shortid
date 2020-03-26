@@ -14,7 +14,7 @@ namespace shortid
         private static string _pool = $"{Smalls}{Bigs}";
         
         // thread management variables
-        private static readonly object threadLock = new object();
+        private static readonly object ThreadLock = new object();
 
         /// <summary>
         /// Generates a random string of varying length with special characters and without numbers 
@@ -45,7 +45,7 @@ namespace shortid
             string __pool;
             Random rand;
             
-            lock (threadLock)
+            lock (ThreadLock)
             {
                 __pool = _pool;
                 rand = _random;
@@ -117,7 +117,7 @@ namespace shortid
         /// <param name="seed">The seed for the random number generator</param>
         public static void SetSeed(int seed)
         {
-            lock (threadLock)
+            lock (ThreadLock)
             {
                 _random = new Random(seed);
             }
@@ -128,7 +128,7 @@ namespace shortid
         /// </summary>
         public static void Reset()
         {
-            lock (threadLock)
+            lock (ThreadLock)
             {
                 _random = new Random();
                 _pool = $"{Smalls}{Bigs}";
