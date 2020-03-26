@@ -12,7 +12,7 @@ namespace shortid
         private const string Numbers = "0123456789";
         private const string Specials = "-_";
         private static string _pool = $"{Smalls}{Bigs}";
-        
+
         // thread management variables
         private static readonly object ThreadLock = new object();
 
@@ -41,34 +41,36 @@ namespace shortid
             {
                 throw new ArgumentException($"The specified length of {length} is less than the lower limit of 7.");
             }
-            
+
             string characterPool;
             Random rand;
-            
+
             lock (ThreadLock)
             {
                 characterPool = _pool;
                 rand = _random;
             }
-            
+
             var poolBuilder = new StringBuilder(characterPool);
             if (useNumbers)
             {
                 poolBuilder.Append(Numbers);
             }
+
             if (useSpecial)
             {
                 poolBuilder.Append(Specials);
             }
 
             var pool = poolBuilder.ToString();
-            
+
             var output = new char[length];
             for (var i = 0; i < length; i++)
             {
                 var charIndex = rand.Next(0, pool.Length);
-                output[i] =  pool[charIndex];
+                output[i] = pool[charIndex];
             }
+
             return new string(output);
         }
 
@@ -93,21 +95,22 @@ namespace shortid
             {
                 throw new ArgumentException("The replacement characters must not be null or empty.");
             }
-            
+
             var stringBuilder = new StringBuilder();
             foreach (var character in characters)
             {
-                if (!char.IsWhiteSpace(character)) {
+                if (!char.IsWhiteSpace(character))
+                {
                     stringBuilder.Append(character);
                 }
             }
-            
+
             if (stringBuilder.Length < 20)
             {
                 throw new InvalidOperationException(
                     "The replacement characters must be at least 20 letters in length and without whitespace.");
             }
-            
+
             _pool = stringBuilder.ToString();
         }
 
