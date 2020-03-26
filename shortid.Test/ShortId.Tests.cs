@@ -15,7 +15,7 @@ namespace shortid.Test
             {
                 id = ShortId.Generate();
             };
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
             id.Should().NotBeEmpty();
         }
 
@@ -49,7 +49,7 @@ namespace shortid.Test
             {
                 ShortId.SetCharacters(seed);
             };
-            action.ShouldThrow<ArgumentException>()
+            action.Should().Throw<ArgumentException>()
                 .WithMessage("The replacement characters must not be null or empty.");
         }
 
@@ -61,7 +61,7 @@ namespace shortid.Test
             {
                 ShortId.SetCharacters(seed);
             };
-            action.ShouldThrow<InvalidOperationException>()
+            action.Should().Throw<InvalidOperationException>()
                 .WithMessage("The replacement characters must be at least 20 letters in length and without whitespace.");
         }
 
@@ -72,7 +72,7 @@ namespace shortid.Test
             {
                 ShortId.Reset();
             };
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace shortid.Test
             {
                 ShortId.Generate(6);
             };
-            action.ShouldThrowExactly<ArgumentException>()
+            action.Should().ThrowExactly<ArgumentException>()
                 .WithMessage("The specified length of 6 is less than the lower limit of 7.");
         }
     }
