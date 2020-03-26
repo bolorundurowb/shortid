@@ -1,6 +1,6 @@
 # shortid
 
-[![Build Status](https://travis-ci.org/bolorundurowb/shortid.svg?branch=master)](https://travis-ci.org/bolorundurowb/shortid)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![NuGet Badge](https://buildstats.info/nuget/shortid)](https://www.nuget.org/packages/shortid)
+[![Build Status](https://travis-ci.org/bolorundurowb/shortid.svg?branch=master)](https://travis-ci.org/bolorundurowb/shortid)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![NuGet Badge](https://buildstats.info/nuget/shortid)](https://www.nuget.org/packages/shortid) [![Coverage Status](https://coveralls.io/repos/github/bolorundurowb/shortid/badge.svg?branch=master)](https://coveralls.io/github/bolorundurowb/shortid?branch=master)
 
 ## About ShortId
 
