@@ -16,7 +16,4 @@
     <Title>shortid</Title>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Configuration" />
-  </ItemGroup>
 </Project>
