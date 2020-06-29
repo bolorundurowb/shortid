@@ -8,7 +8,7 @@ namespace shortid.Configuration
 
         public bool UseNumbers { get; set; }
 
-        public bool UseSpecialCharacters { get; set; }
+        public bool UseSpecialCharacters { get; set; } = true;
 
         public int Length { get; set; } = Random.Next(7, 15);
     }
