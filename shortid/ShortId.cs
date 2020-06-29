@@ -69,9 +69,9 @@ namespace shortid
         }
 
         /// <summary>
-        /// Generates a random string of a specified length with the option to add numbers and special characters.
+        /// Generates a random string to match the specified options
         /// </summary>
-        /// <param name="options">The length of the generated string.</param>
+        /// <param name="options">The generation options.</param>
         /// <returns>A random string.</returns>
         public static string Generate(GenerationOptions options)
         {
