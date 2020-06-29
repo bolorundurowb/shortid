@@ -28,6 +28,7 @@ namespace shortid.Test
         {
             var id = ShortId.Generate(true, false);
             var ans = new[] {"-", "_"}.Any(x => id.Contains(x));
+
             ans.Should().BeFalse();
         }
 
@@ -35,7 +36,11 @@ namespace shortid.Test
         public void GenerateCreatesIdsOfASpecifiedLength()
         {
             var id = ShortId.Generate(false, true, 8);
-            id.Length.Should().Be(8);
+
+            id
+                .Length
+                .Should()
+                .Be(8);
         }
 
         [Fact]
@@ -43,7 +48,10 @@ namespace shortid.Test
         {
             var seed = string.Empty;
             Action action = () => { ShortId.SetCharacters(seed); };
-            action.Should().Throw<ArgumentException>()
+
+            action
+                .Should()
+                .Throw<ArgumentException>()
                 .WithMessage("The replacement characters must not be null or empty.");
         }
 
@@ -52,7 +60,10 @@ namespace shortid.Test
         {
             const string seed = "783ujrcuei039kj4";
             Action action = () => { ShortId.SetCharacters(seed); };
-            action.Should().Throw<InvalidOperationException>()
+
+            action
+                .Should()
+                .Throw<InvalidOperationException>()
                 .WithMessage(
                     "The replacement characters must be at least 20 letters in length and without whitespace.");
         }
@@ -61,7 +72,10 @@ namespace shortid.Test
         public void DoesNotAllowLengthsLessThan7()
         {
             Action action = () => { ShortId.Generate(6); };
-            action.Should().ThrowExactly<ArgumentException>()
+
+            action
+                .Should()
+                .ThrowExactly<ArgumentException>()
                 .WithMessage("The specified length of 6 is less than the lower limit of 7.");
         }
 
