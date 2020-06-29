@@ -25,6 +25,7 @@ namespace shortid
         /// <returns>A random string.</returns>
         public static string Generate(bool useNumbers = false, bool useSpecial = true)
         {
+            int 
             var length = _random.Next(7, 15);
             return Generate(useNumbers, useSpecial, length);
         }
@@ -156,7 +157,10 @@ namespace shortid
                     "The replacement characters must be at least 20 letters in length and without whitespace.");
             }
 
-            _pool = stringBuilder.ToString();
+            lock (ThreadLock)
+            {
+                _pool = stringBuilder.ToString();
+            }
         }
 
         /// <summary>
