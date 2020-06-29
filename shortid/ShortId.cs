@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using shortid.Configuration;
 
 namespace shortid
 {
@@ -75,7 +76,51 @@ namespace shortid
         }
 
         /// <summary>
-        /// Generates a random string of a specified length with special characetrs and without numbers.
+        /// Generates a random string of a specified length with the option to add numbers and special characters.
+        /// </summary>
+        /// <param name="options">The length of the generated string.</param>
+        /// <returns>A random string.</returns>
+        public static string Generate(GenerationOptions options)
+        {
+            if (options.Length < 7)
+            {
+                throw new ArgumentException($"The specified length of {options.Length} is less than the lower limit of 7.");
+            }
+
+            string characterPool;
+            Random rand;
+
+            lock (ThreadLock)
+            {
+                characterPool = _pool;
+                rand = _random;
+            }
+
+            var poolBuilder = new StringBuilder(characterPool);
+            if (options.UseNumbers)
+            {
+                poolBuilder.Append(Numbers);
+            }
+
+            if (options.UseSpecialCharacters)
+            {
+                poolBuilder.Append(Specials);
+            }
+
+            var pool = poolBuilder.ToString();
+
+            var output = new char[options.Length];
+            for (var i = 0; i < options.Length; i++)
+            {
+                var charIndex = rand.Next(0, pool.Length);
+                output[i] = pool[charIndex];
+            }
+
+            return new string(output);
+        }
+
+        /// <summary>
+        /// Generates a random string of a specified length with special characters and without numbers.
         /// </summary>
         /// <param name="length">The length of the generated string.</param>
         /// <returns>A random string.</returns>
