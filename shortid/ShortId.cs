@@ -23,11 +23,15 @@ namespace shortid
         /// <param name="useNumbers">Whether or not to include numbers.</param>
         /// <param name="useSpecial">Whether or not special characters are included.</param>
         /// <returns>A random string.</returns>
+        [Obsolete("Use the Generate(options) overload instead")]
         public static string Generate(bool useNumbers = false, bool useSpecial = true)
         {
-            int 
-            var length = _random.Next(7, 15);
-            return Generate(useNumbers, useSpecial, length);
+            var options = new GenerationOptions
+            {
+                UseNumbers = useNumbers,
+                UseSpecialCharacters = useSpecial
+            };
+            return Generate(options);
         }
 
         /// <summary>
@@ -37,43 +41,31 @@ namespace shortid
         /// <param name="useSpecial">Whether or not special characters are included.</param>
         /// <param name="length">The length of the generated string.</param>
         /// <returns>A random string.</returns>
+        [Obsolete("Use the Generate(options) overload instead")]
         public static string Generate(bool useNumbers, bool useSpecial, int length)
         {
-            if (length < 7)
+            var options = new GenerationOptions
             {
-                throw new ArgumentException($"The specified length of {length} is less than the lower limit of 7.");
-            }
+                UseNumbers = useNumbers,
+                UseSpecialCharacters = useSpecial,
+                Length = length
+            };
+            return Generate(options);
+        }
 
-            string characterPool;
-            Random rand;
-
-            lock (ThreadLock)
+        /// <summary>
+        /// Generates a random string of a specified length with special characters and without numbers.
+        /// </summary>
+        /// <param name="length">The length of the generated string.</param>
+        /// <returns>A random string.</returns>
+        [Obsolete("Use the Generate(options) overload instead")]
+        public static string Generate(int length)
+        {
+            var options = new GenerationOptions
             {
-                characterPool = _pool;
-                rand = _random;
-            }
-
-            var poolBuilder = new StringBuilder(characterPool);
-            if (useNumbers)
-            {
-                poolBuilder.Append(Numbers);
-            }
-
-            if (useSpecial)
-            {
-                poolBuilder.Append(Specials);
-            }
-
-            var pool = poolBuilder.ToString();
-
-            var output = new char[length];
-            for (var i = 0; i < length; i++)
-            {
-                var charIndex = rand.Next(0, pool.Length);
-                output[i] = pool[charIndex];
-            }
-
-            return new string(output);
+                Length = length
+            };
+            return Generate(options);
         }
 
         /// <summary>
@@ -85,7 +77,8 @@ namespace shortid
         {
             if (options.Length < 7)
             {
-                throw new ArgumentException($"The specified length of {options.Length} is less than the lower limit of 7.");
+                throw new ArgumentException(
+                    $"The specified length of {options.Length} is less than the lower limit of 7.");
             }
 
             string characterPool;
@@ -118,16 +111,6 @@ namespace shortid
             }
 
             return new string(output);
-        }
-
-        /// <summary>
-        /// Generates a random string of a specified length with special characters and without numbers.
-        /// </summary>
-        /// <param name="length">The length of the generated string.</param>
-        /// <returns>A random string.</returns>
-        public static string Generate(int length)
-        {
-            return Generate(false, true, length);
         }
 
         /// <summary>
