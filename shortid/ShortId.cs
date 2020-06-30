@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using shortid.Configuration;
 
@@ -31,6 +31,7 @@ namespace shortid
                 UseNumbers = useNumbers,
                 UseSpecialCharacters = useSpecial
             };
+
             return Generate(options);
         }
 
@@ -50,6 +51,7 @@ namespace shortid
                 UseSpecialCharacters = useSpecial,
                 Length = length
             };
+
             return Generate(options);
         }
 
@@ -65,16 +67,24 @@ namespace shortid
             {
                 Length = length
             };
+
             return Generate(options);
         }
 
         /// <summary>
-        /// Generates a random string to match the specified options
+        /// Generates a random string to match the specified options.
         /// </summary>
         /// <param name="options">The generation options.</param>
         /// <returns>A random string.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when options is null.</exception>
+        /// <exception cref="System.ArgumentException">Thrown when options.Length is less than 7.</exception>
         public static string Generate(GenerationOptions options)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             if (options.Length < 7)
             {
                 throw new ArgumentException(
