@@ -2,6 +2,9 @@ using shortid.Utils;
 
 namespace shortid.Configuration
 {
+    /// <summary>
+    /// Provides programmatic configuration for the shortid library.
+    /// </summary>
     public class GenerationOptions
     {
         /// <summary>
