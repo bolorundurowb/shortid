@@ -76,8 +76,8 @@ namespace shortid
         /// </summary>
         /// <param name="options">The generation options.</param>
         /// <returns>A random string.</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown when options is null.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when options.Length is less than 7.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when options is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when options.Length is less than 7.</exception>
         public static string Generate(GenerationOptions options)
         {
             if (options == null)
@@ -127,6 +127,7 @@ namespace shortid
         /// Changes the character set that id's are generated from.
         /// </summary>
         /// <param name="characters">The new character set.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="characters"/> is null or empty.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the new character set is less than 20 characters.</exception>
         public static void SetCharacters(string characters)
         {
