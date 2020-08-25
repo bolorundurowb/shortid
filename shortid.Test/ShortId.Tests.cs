@@ -69,7 +69,28 @@ namespace shortid.Test
         }
 
         [Fact]
-        public void DoesNotAllowLengthsLessThan7()
+        public void SetSeedWorksWithValidCharSet()
+        {
+            const string seed = "783ujrcuei039jhbewqoiewoiehjsbsahauwiwGHDEWIUkj4";
+            Action action = () => { ShortId.SetCharacters(seed); };
+
+            action
+                .Should()
+                .NotThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void SetSeedThrowsWhenOptionsAreNull()
+        {
+            Action action = () => { ShortId.Generate(null); };
+
+            action
+                .Should()
+                .Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void DoesNotAllowLengthsLessThanEight()
         {
             Action action = () => { ShortId.Generate(6); };
 
