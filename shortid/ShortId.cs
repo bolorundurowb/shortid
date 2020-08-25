@@ -78,7 +78,7 @@ namespace shortid
         /// <param name="options">The generation options.</param>
         /// <returns>A random string.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when options is null.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when options.Length is less than 7.</exception>
+        /// <exception cref="System.ArgumentException">Thrown when options.Length is less than 8.</exception>
         public static string Generate(GenerationOptions options)
         {
             if (options == null)
@@ -86,21 +86,13 @@ namespace shortid
                 throw new ArgumentNullException(nameof(options));
             }
 
-            if (options.Length < 7)
+            if (options.Length < Constants.MinimumAutoLength)
             {
                 throw new ArgumentException(
-                    $"The specified length of {options.Length} is less than the lower limit of 7.");
+                    $"The specified length of {options.Length} is less than the lower limit of {Constants.MinimumAutoLength} to avoid conflicts.");
             }
 
-            string characterPool;
-            Random rand;
-
-            lock (ThreadLock)
-            {
-                characterPool = _pool;
-                rand = _random;
-            }
-
+            var characterPool = _pool;
             var poolBuilder = new StringBuilder(characterPool);
             if (options.UseNumbers)
             {
@@ -117,8 +109,11 @@ namespace shortid
             var output = new char[options.Length];
             for (var i = 0; i < options.Length; i++)
             {
-                var charIndex = rand.Next(0, pool.Length);
-                output[i] = pool[charIndex];
+                lock (ThreadLock)
+                {
+                    var charIndex = _random.Next(0, pool.Length);
+                    output[i] = pool[charIndex];
+                }
             }
 
             return new string(output);
