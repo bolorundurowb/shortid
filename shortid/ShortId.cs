@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using shortid.Configuration;
 using shortid.Utils;
@@ -132,16 +133,13 @@ namespace shortid
                 throw new ArgumentException("The replacement characters must not be null or empty.");
             }
 
-            var stringBuilder = new StringBuilder();
-            foreach (var character in characters)
-            {
-                if (!char.IsWhiteSpace(character))
-                {
-                    stringBuilder.Append(character);
-                }
-            }
+            var charSet = characters
+                .ToCharArray()
+                .Where(x => !char.IsWhiteSpace(x))
+                .Distinct()
+                .ToArray();
 
-            if (stringBuilder.Length < Constants.MinimumCharacterSetLength)
+            if (charSet.Length < Constants.MinimumCharacterSetLength)
             {
                 throw new InvalidOperationException(
                     $"The replacement characters must be at least {Constants.MinimumCharacterSetLength} letters in length and without whitespace.");
@@ -149,7 +147,7 @@ namespace shortid
 
             lock (ThreadLock)
             {
-                _pool = stringBuilder.ToString();
+                _pool = new string(charSet);
             }
         }
 

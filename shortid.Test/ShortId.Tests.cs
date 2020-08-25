@@ -65,13 +65,13 @@ namespace shortid.Test
                 .Should()
                 .Throw<InvalidOperationException>()
                 .WithMessage(
-                    "The replacement characters must be at least 20 letters in length and without whitespace.");
+                    "The replacement characters must be at least 50 letters in length and without whitespace.");
         }
 
         [Fact]
         public void SetSeedWorksWithValidCharSet()
         {
-            const string seed = "783ujrcuei039jhbewqoiewoiehjsbsahauwiwGHDEWIUkj4";
+            const string seed = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫";
             Action action = () => { ShortId.SetCharacters(seed); };
 
             action
