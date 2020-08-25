@@ -76,7 +76,7 @@ namespace shortid.Test
             action
                 .Should()
                 .ThrowExactly<ArgumentException>()
-                .WithMessage("The specified length of 6 is less than the lower limit of 7.");
+                .WithMessage("The specified length of 6 is less than the lower limit of 8.");
         }
 
         [Fact]
