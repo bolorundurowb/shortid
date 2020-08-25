@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using shortid.Configuration;
+using shortid.Utils;
 
 namespace shortid
 {
@@ -8,10 +9,10 @@ namespace shortid
     {
         // app variables
         private static Random _random = new Random();
-        private const string Bigs = "ABCDEFGHIJKLMNOPQRSTUVWXY";
-        private const string Smalls = "abcdefghjlkmnopqrstuvwxyz";
+        private const string Bigs = "ABCDEFGHIJKLMNPQRSTUVWXY";
+        private const string Smalls = "abcdefghjklmnopqrstuvwxyz";
         private const string Numbers = "0123456789";
-        private const string Specials = "-_";
+        private const string Specials = "_-";
         private static string _pool = $"{Smalls}{Bigs}";
 
         // thread management variables
