@@ -124,7 +124,7 @@ namespace shortid
         /// </summary>
         /// <param name="characters">The new character set.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="characters"/> is null or empty.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when the new character set is less than 20 characters.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the new character set is less than 50 characters.</exception>
         public static void SetCharacters(string characters)
         {
             if (string.IsNullOrWhiteSpace(characters))
@@ -141,10 +141,10 @@ namespace shortid
                 }
             }
 
-            if (stringBuilder.Length < 20)
+            if (stringBuilder.Length < Constants.MinimumCharacterSetLength)
             {
                 throw new InvalidOperationException(
-                    "The replacement characters must be at least 20 letters in length and without whitespace.");
+                    $"The replacement characters must be at least {Constants.MinimumCharacterSetLength} letters in length and without whitespace.");
             }
 
             lock (ThreadLock)
