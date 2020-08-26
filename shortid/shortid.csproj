@@ -8,7 +8,7 @@
     <PackageIconUrl>https://members.orcid.org/sites/default/files/vector_iD_icon.svg</PackageIconUrl>
     <RepositoryUrl>https://github.com/bolorundurowb/shortid/</RepositoryUrl>
     <PackageTags>shortid short id databse identifier key primarykey mongodb sql</PackageTags>
-    <PackageReleaseNotes>- fix thread safety issues
+    <PackageReleaseNotes>-
 - add in further restrictions to maintain uniqueness</PackageReleaseNotes>
     <Authors>Bolorunduro Winner-Timothy</Authors>
     <Description>A library that generates random identifiers from 7 to 14 characters. Identifiers generated can be used as primary keys for databases or unique identifiers.</Description>
@@ -16,9 +16,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>shortid</Title>
     <RepositoryType>git</RepositoryType>
-    <PackageVersion>3.0.0</PackageVersion>
-    <AssemblyVersion>3.0.0</AssemblyVersion>
-    <FileVersion>3.0.0</FileVersion>
+    <PackageVersion>3.0.0.0</PackageVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
     <NeutralLanguage>en-NG</NeutralLanguage>
   </PropertyGroup>
 </Project>

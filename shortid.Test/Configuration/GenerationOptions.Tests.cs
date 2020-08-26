@@ -33,7 +33,7 @@ namespace shortid.Test.Configuration
             options
                 .Length
                 .Should()
-                .BeGreaterThan(7);
+                .BeGreaterThan(6);
             options
                 .Length
                 .Should()

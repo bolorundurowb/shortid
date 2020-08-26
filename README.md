@@ -37,7 +37,7 @@ using shortid.Configuration;
 
 This gives your code access the classes and methods of the `shortid` namespace.
 
-To generate a unique id of any length between 8 and 14, you call the `Generate` method without parameters.
+To generate a unique id of any length between 8 and 15, you call the `Generate` method without parameters.
 
 ```csharp
 string id = ShortId.Generate();
@@ -85,7 +85,7 @@ string id = ShortId.Generate(options);
 To change the character set in use, run the following:
 
 ```csharp
-string characters = //whatever you want;
+string characters = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫"; //whatever you want;
 ShortId.SetCharacters(characters);
 ```
 
