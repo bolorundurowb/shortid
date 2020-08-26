@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using shortid.Configuration;
+using shortid.Utils;
 
 namespace shortid
 {
@@ -11,7 +12,7 @@ namespace shortid
         private const string Bigs = "ABCDEFGHIJKLMNPQRSTUVWXY";
         private const string Smalls = "abcdefghjklmnopqrstuvwxyz";
         private const string Numbers = "0123456789";
-        private const string Specials = "-_";
+        private const string Specials = "_-";
         private static string _pool = $"{Smalls}{Bigs}";
 
         // thread management variables
@@ -85,10 +86,10 @@ namespace shortid
                 throw new ArgumentNullException(nameof(options));
             }
 
-            if (options.Length < 7)
+            if (options.Length < Constants.MinimumAutoLength)
             {
                 throw new ArgumentException(
-                    $"The specified length of {options.Length} is less than the lower limit of 7.");
+                    $"The specified length of {options.Length} is less than the lower limit of {Constants.MinimumAutoLength}.");
             }
 
             string characterPool;
@@ -145,7 +146,7 @@ namespace shortid
                 }
             }
 
-            if (stringBuilder.Length < 20)
+            if (stringBuilder.Length < Constants.MinimumCharacterSetLength)
             {
                 throw new InvalidOperationException(
                     "The replacement characters must be at least 20 letters in length and without whitespace.");
