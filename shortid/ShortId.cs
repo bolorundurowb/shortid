@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using shortid.Configuration;
+using shortid.Utils;
 
 namespace shortid
 {
@@ -8,10 +9,10 @@ namespace shortid
     {
         // app variables
         private static Random _random = new Random();
-        private const string Bigs = "ABCDEFGHIJKLMNOPQRSTUVWXY";
-        private const string Smalls = "abcdefghjlkmnopqrstuvwxyz";
+        private const string Bigs = "ABCDEFGHIJKLMNPQRSTUVWXY";
+        private const string Smalls = "abcdefghjklmnopqrstuvwxyz";
         private const string Numbers = "0123456789";
-        private const string Specials = "-_";
+        private const string Specials = "_-";
         private static string _pool = $"{Smalls}{Bigs}";
 
         // thread management variables
@@ -85,21 +86,13 @@ namespace shortid
                 throw new ArgumentNullException(nameof(options));
             }
 
-            if (options.Length < 7)
+            if (options.Length < Constants.MinimumAutoLength)
             {
                 throw new ArgumentException(
-                    $"The specified length of {options.Length} is less than the lower limit of 7.");
+                    $"The specified length of {options.Length} is less than the lower limit of {Constants.MinimumAutoLength}.");
             }
 
-            string characterPool;
-            Random rand;
-
-            lock (ThreadLock)
-            {
-                characterPool = _pool;
-                rand = _random;
-            }
-
+            var characterPool = _pool;
             var poolBuilder = new StringBuilder(characterPool);
             if (options.UseNumbers)
             {
@@ -116,8 +109,11 @@ namespace shortid
             var output = new char[options.Length];
             for (var i = 0; i < options.Length; i++)
             {
-                var charIndex = rand.Next(0, pool.Length);
-                output[i] = pool[charIndex];
+                lock (ThreadLock)
+                {
+                    var charIndex = _random.Next(0, pool.Length);
+                    output[i] = pool[charIndex];
+                }
             }
 
             return new string(output);
@@ -145,7 +141,7 @@ namespace shortid
                 }
             }
 
-            if (stringBuilder.Length < 20)
+            if (stringBuilder.Length < Constants.MinimumCharacterSetLength)
             {
                 throw new InvalidOperationException(
                     "The replacement characters must be at least 20 letters in length and without whitespace.");
