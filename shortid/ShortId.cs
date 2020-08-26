@@ -92,15 +92,7 @@ namespace shortid
                     $"The specified length of {options.Length} is less than the lower limit of {Constants.MinimumAutoLength}.");
             }
 
-            string characterPool;
-            Random rand;
-
-            lock (ThreadLock)
-            {
-                characterPool = _pool;
-                rand = _random;
-            }
-
+            var characterPool = _pool;
             var poolBuilder = new StringBuilder(characterPool);
             if (options.UseNumbers)
             {
@@ -117,8 +109,11 @@ namespace shortid
             var output = new char[options.Length];
             for (var i = 0; i < options.Length; i++)
             {
-                var charIndex = rand.Next(0, pool.Length);
-                output[i] = pool[charIndex];
+                lock (ThreadLock)
+                {
+                    var charIndex = _random.Next(0, pool.Length);
+                    output[i] = pool[charIndex];
+                }
             }
 
             return new string(output);
