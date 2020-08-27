@@ -37,7 +37,7 @@ using shortid.Configuration;
 
 This gives your code access the classes and methods of the `shortid` namespace.
 
-To generate a unique id of any length between 7 and 14, you call the `Generate` method without parameters.
+To generate a unique id of any length between 8 and 15, you call the `Generate` method without parameters.
 
 ```csharp
 string id = ShortId.Generate();
@@ -89,7 +89,7 @@ string characters = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈ�
 ShortId.SetCharacters(characters);
 ```
 
-**NOTE: the new character set must not be `null`, an empty string or whitespace. Also, all whitespace and duplicate characters would be removed, finally the character set cannot be less than 20 characters.**
+**NOTE: the new character set must not be `null`, an empty string or whitespace. Also, all whitespace and duplicate characters would be removed, finally the character set cannot be less than 50 characters.**
 
 `ShortId` also allows the seed for the random number generator to be set.
 

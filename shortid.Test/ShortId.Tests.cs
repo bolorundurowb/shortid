@@ -65,18 +65,39 @@ namespace shortid.Test
                 .Should()
                 .Throw<InvalidOperationException>()
                 .WithMessage(
-                    "The replacement characters must be at least 20 letters in length and without whitespace.");
+                    "The replacement characters must be at least 50 letters in length and without whitespace.");
         }
 
         [Fact]
-        public void DoesNotAllowLengthsLessThan7()
+        public void SetSeedWorksWithValidCharSet()
+        {
+            const string seed = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫";
+            Action action = () => { ShortId.SetCharacters(seed); };
+
+            action
+                .Should()
+                .NotThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void SetSeedThrowsWhenOptionsAreNull()
+        {
+            Action action = () => { ShortId.Generate(null); };
+
+            action
+                .Should()
+                .Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void DoesNotAllowLengthsLessThanEight()
         {
             Action action = () => { ShortId.Generate(6); };
 
             action
                 .Should()
                 .ThrowExactly<ArgumentException>()
-                .WithMessage("The specified length of 6 is less than the lower limit of 7.");
+                .WithMessage("The specified length of 6 is less than the lower limit of 8 to avoid conflicts.");
         }
 
         [Fact]

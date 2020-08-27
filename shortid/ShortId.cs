@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using shortid.Configuration;
 using shortid.Utils;
@@ -78,7 +79,7 @@ namespace shortid
         /// <param name="options">The generation options.</param>
         /// <returns>A random string.</returns>
         /// <exception cref="ArgumentNullException">Thrown when options is null.</exception>
-        /// <exception cref="ArgumentException">Thrown when options.Length is less than 7.</exception>
+        /// <exception cref="ArgumentException">Thrown when options.Length is less than 8.</exception>
         public static string Generate(GenerationOptions options)
         {
             if (options == null)
@@ -89,7 +90,7 @@ namespace shortid
             if (options.Length < Constants.MinimumAutoLength)
             {
                 throw new ArgumentException(
-                    $"The specified length of {options.Length} is less than the lower limit of {Constants.MinimumAutoLength}.");
+                    $"The specified length of {options.Length} is less than the lower limit of {Constants.MinimumAutoLength} to avoid conflicts.");
             }
 
             var characterPool = _pool;
@@ -124,7 +125,7 @@ namespace shortid
         /// </summary>
         /// <param name="characters">The new character set.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="characters"/> is null or empty.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when the new character set is less than 20 characters.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the new character set is less than 50 characters.</exception>
         public static void SetCharacters(string characters)
         {
             if (string.IsNullOrWhiteSpace(characters))
@@ -132,24 +133,21 @@ namespace shortid
                 throw new ArgumentException("The replacement characters must not be null or empty.");
             }
 
-            var stringBuilder = new StringBuilder();
-            foreach (var character in characters)
-            {
-                if (!char.IsWhiteSpace(character))
-                {
-                    stringBuilder.Append(character);
-                }
-            }
+            var charSet = characters
+                .ToCharArray()
+                .Where(x => !char.IsWhiteSpace(x))
+                .Distinct()
+                .ToArray();
 
-            if (stringBuilder.Length < Constants.MinimumCharacterSetLength)
+            if (charSet.Length < Constants.MinimumCharacterSetLength)
             {
                 throw new InvalidOperationException(
-                    "The replacement characters must be at least 20 letters in length and without whitespace.");
+                    $"The replacement characters must be at least {Constants.MinimumCharacterSetLength} letters in length and without whitespace.");
             }
 
             lock (ThreadLock)
             {
-                _pool = stringBuilder.ToString();
+                _pool = new string(charSet);
             }
         }
 
