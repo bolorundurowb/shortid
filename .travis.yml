@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-dotnet: 2.2.207
+dotnet: 5.0.100
 dist: xenial
 install:
   - dotnet restore
