@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.1;netstandard1.3;netstandard1.6;netstandard2.0</TargetFrameworks>
     <Version>3.0.1</Version>
     <Copyright>Copyright 2021</Copyright>
     <PackageLicenseUrl>https://github.com/bolorundurowb/shortid/blob/master/LICENSE</PackageLicenseUrl>
@@ -16,8 +15,9 @@
     <Title>shortid</Title>
     <RepositoryType>git</RepositoryType>
     <PackageVersion>3.0.1</PackageVersion>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
+    <AssemblyVersion>3.0.1</AssemblyVersion>
+    <FileVersion>3.0.1</FileVersion>
     <NeutralLanguage>en-NG</NeutralLanguage>
+    <TargetFramework>netstandard1.0</TargetFramework>
   </PropertyGroup>
 </Project>
