@@ -7,41 +7,6 @@ namespace shortid.Test
 {
     public class ShortIdTests
     {
-        [Fact]
-        public void GeneratedWithoutExceptions()
-        {
-            var id = string.Empty;
-            Action action = () => { id = ShortId.Generate(); };
-            action.Should().NotThrow();
-            id.Should().NotBeEmpty();
-        }
-
-        [Fact]
-        public void GenerateCreatesIdsWithoutNumbers()
-        {
-            var id = ShortId.Generate(false);
-            id.Any(char.IsDigit).Should().BeFalse();
-        }
-
-        [Fact]
-        public void GenerateCreatesIdsWithoutSpecialCharacters()
-        {
-            var id = ShortId.Generate(true, false);
-            var ans = new[] {"-", "_"}.Any(x => id.Contains(x));
-
-            ans.Should().BeFalse();
-        }
-
-        [Fact]
-        public void GenerateCreatesIdsOfASpecifiedLength()
-        {
-            var id = ShortId.Generate(false, true, 8);
-
-            id
-                .Length
-                .Should()
-                .Be(8);
-        }
 
         [Fact]
         public void SetSeedThrowsWhenCharacterSetIsEmptyOrNull()
@@ -87,17 +52,6 @@ namespace shortid.Test
             action
                 .Should()
                 .Throw<ArgumentNullException>();
-        }
-
-        [Fact]
-        public void DoesNotAllowLengthsLessThanEight()
-        {
-            Action action = () => { ShortId.Generate(6); };
-
-            action
-                .Should()
-                .ThrowExactly<ArgumentException>()
-                .WithMessage("The specified length of 6 is less than the lower limit of 8 to avoid conflicts.");
         }
 
         [Fact]
