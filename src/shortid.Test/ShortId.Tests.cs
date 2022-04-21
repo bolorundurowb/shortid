@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
+using shortid.Configuration;
 using Xunit;
 
 namespace shortid.Test
 {
     public class ShortIdTests
     {
-
         [Fact]
         public void SetSeedThrowsWhenCharacterSetIsEmptyOrNull()
         {
             var seed = string.Empty;
-            Action action = () => { ShortId.SetCharacters(seed); };
+            var action = () => { ShortId.SetCharacters(seed); };
 
             action
                 .Should()
@@ -24,7 +24,7 @@ namespace shortid.Test
         public void SetSeedThrowsWhenCharacterSetIsLessThan20Characters()
         {
             const string seed = "783ujrcuei039kj4";
-            Action action = () => { ShortId.SetCharacters(seed); };
+            var action = () => { ShortId.SetCharacters(seed); };
 
             action
                 .Should()
@@ -37,7 +37,7 @@ namespace shortid.Test
         public void SetSeedWorksWithValidCharSet()
         {
             const string seed = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫";
-            Action action = () => { ShortId.SetCharacters(seed); };
+            var action = () => { ShortId.SetCharacters(seed); };
 
             action
                 .Should()
@@ -45,9 +45,9 @@ namespace shortid.Test
         }
 
         [Fact]
-        public void SetSeedThrowsWhenOptionsAreNull()
+        public void GenerateThrowsWhenOptionsAreNull()
         {
-            Action action = () => { ShortId.Generate(null); };
+            var action = () => { ShortId.Generate(null); };
 
             action
                 .Should()
@@ -55,19 +55,38 @@ namespace shortid.Test
         }
 
         [Fact]
+        public void GenerateShouldSucceedWithoutOptions()
+        {
+            var response = ShortId.Generate();
+
+            response.Should().NotBeNullOrEmpty();
+            response.Length.Should().BeGreaterThan(6);
+            response.Length.Should().BeLessThan(15);
+        }
+
+        [Fact]
+        public void GenerateShouldSucceedWithLengthOptions()
+        {
+            var options = new GenerationOptions(length: 22);
+            var response = ShortId.Generate(options);
+
+            response.Should().NotBeNullOrEmpty();
+            response.Length.Should().Be(22);
+        }
+
+        [Fact]
         public void ShouldResetInternalStateWithoutProblems()
         {
-            Action action = () => { ShortId.Reset(); };
+            var action = () => { ShortId.Reset(); };
             action.Should().NotThrow();
         }
 
         [Fact]
         public void ShouldAllowForACustomSeed()
         {
-            Action action = () => { ShortId.SetSeed(678309202); };
+            var action = () => { ShortId.SetSeed(678309202); };
 
-            action.Should()
-                .NotThrow<Exception>();
+            action.Should().NotThrow();
         }
     }
 }
