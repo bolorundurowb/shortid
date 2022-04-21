@@ -1,8 +1,9 @@
 language: csharp
 mono: none
-dotnet: 5.0.100
+dotnet: 6.0.202
 dist: xenial
 install:
+  - cd src
   - dotnet restore
 script:
   - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover shortid.Test/shortid.Test.csproj

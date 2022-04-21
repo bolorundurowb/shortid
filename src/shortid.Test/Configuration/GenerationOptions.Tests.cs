@@ -47,12 +47,7 @@ namespace shortid.Test.Configuration
             const bool useSpecial = false;
             const int length = 17;
 
-            var options = new GenerationOptions
-            {
-                UseNumbers = useNumbers,
-                UseSpecialCharacters = useSpecial,
-                Length = length
-            };
+            var options = new GenerationOptions(useNumbers, useSpecial, length);
 
             options
                 .Length

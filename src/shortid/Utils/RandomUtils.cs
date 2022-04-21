@@ -4,8 +4,8 @@ namespace shortid.Utils
 {
     internal static class RandomUtils
     {
-        private static readonly Random Random = new Random();
-        private static readonly object ThreadLock = new object();
+        private static readonly Random Random = new();
+        private static readonly object ThreadLock = new();
 
         public static int GenerateNumberInRange(int min, int max)
         {
