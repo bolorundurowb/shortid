@@ -20,10 +20,17 @@ namespace shortid
         private static readonly object ThreadLock = new();
 
         /// <summary>
+        /// Generates a random string to match the default generation options.
+        /// i.e random length between 8 and 14, with special characters and no numbers
+        /// </summary>
+        /// <returns>A random unique string.</returns>
+        public static string Generate() => Generate(new GenerationOptions());
+
+        /// <summary>
         /// Generates a random string to match the specified options.
         /// </summary>
         /// <param name="options">The generation options.</param>
-        /// <returns>A random string.</returns>
+        /// <returns>A random unique string.</returns>
         /// <exception cref="ArgumentNullException">Thrown when options is null.</exception>
         /// <exception cref="ArgumentException">Thrown when options.Length is less than 8.</exception>
         public static string Generate(GenerationOptions options)
