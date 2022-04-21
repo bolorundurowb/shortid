@@ -47,10 +47,7 @@ string id = ShortId.Generate();
 If you want to include numbers in the generated id, then you call the `Generate` method with options indicating your preference.
 
 ```csharp
-var options = new GenerationOptions
-{
-  UseNumbers = true
-};
+var options = new GenerationOptions(useNumbers: true);
 string id = ShortId.Generate(options);
 // id = O_bBY-YUkJg
 ```
@@ -58,10 +55,7 @@ string id = ShortId.Generate(options);
 If you do not want special characters *i.e _ and -* in your generated id, then call the `Generate` method with options indicating your preferences.
 
 ```csharp
-var options = new GenerationOptions
-{
-  UseSpecialCharacters = false
-};
+var options = new GenerationOptions(useSpecialCharacters: false);
 string id = ShortId.Generate(options);
 // id = waBfk3z
 ```
@@ -69,10 +63,7 @@ string id = ShortId.Generate(options);
 If you want to specify the length of the generated id, call the `Generate` method with options indicating your preferences.
 
 ```csharp
-var options = new GenerationOptions
-{
-  Length = 9
-};
+var options = new GenerationOptions(length: 9);
 string id = ShortId.Generate(options);
 // id = M-snXzBkj
 ```
