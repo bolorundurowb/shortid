@@ -9,7 +9,7 @@ namespace shortid
     public static class ShortId
     {
         // app variables
-        private static Random _random = new Random();
+        private static Random _random = new();
         private const string Bigs = "ABCDEFGHIJKLMNPQRSTUVWXY";
         private const string Smalls = "abcdefghjklmnopqrstuvwxyz";
         private const string Numbers = "0123456789";
@@ -17,7 +17,7 @@ namespace shortid
         private static string _pool = $"{Smalls}{Bigs}";
 
         // thread management variables
-        private static readonly object ThreadLock = new object();
+        private static readonly object ThreadLock = new();
 
         /// <summary>
         /// Generates a random string of varying length with special characters and without numbers.
