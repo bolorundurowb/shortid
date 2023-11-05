@@ -1,27 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Version>3.0.1</Version>
-    <Copyright>© 2017 , Bolorunduro Winner-Timothy. All Rights reserved.</Copyright>
-    <PackageLicenseUrl>https://github.com/bolorundurowb/shortid/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/bolorundurowb/shortid/</PackageProjectUrl>
-    <PackageIconUrl>https://members.orcid.org/sites/default/files/vector_iD_icon.svg</PackageIconUrl>
-    <RepositoryUrl>https://github.com/bolorundurowb/shortid/</RepositoryUrl>
-    <PackageTags>shortid short id databse identifier key primarykey mongodb sql</PackageTags>
-    <PackageReleaseNotes>- simplify generation
-- add nullability support
-- remove obsolete methods</PackageReleaseNotes>
-    <Authors>Bolorunduro Winner-Timothy</Authors>
-    <Description>A library that generates random identifiers from 7 to 14 characters. Identifiers generated can be used as primary keys for databases or unique identifiers.</Description>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Title>shortid</Title>
-    <RepositoryType>git</RepositoryType>
-    <PackageVersion>4.0.0</PackageVersion>
-    <AssemblyVersion>3.0.1</AssemblyVersion>
-    <FileVersion>3.0.1</FileVersion>
-    <NeutralLanguage>en-NG</NeutralLanguage>
-    <TargetFramework>netstandard1.0</TargetFramework>
-    <LangVersion>10</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <Version>3.0.2</Version>
+        <Copyright>© 2017 , Bolorunduro Winner-Timothy. All Rights reserved.</Copyright>
+        <PackageLicenseUrl>https://github.com/bolorundurowb/shortid/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/bolorundurowb/shortid/</PackageProjectUrl>
+        <PackageIconUrl>https://members.orcid.org/sites/default/files/vector_iD_icon.svg</PackageIconUrl>
+        <RepositoryUrl>https://github.com/bolorundurowb/shortid/</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageTags>shortid short id databse identifier key primarykey mongodb sql</PackageTags>
+        <PackageReleaseNotes>- include readme</PackageReleaseNotes>
+        <Authors>Bolorunduro Winner-Timothy</Authors>
+        <Description>A library that generates random identifiers from 7 to 14 characters. Identifiers generated can be used as primary keys for databases or unique identifiers.</Description>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>shortid</Title>
+        <RepositoryType>git</RepositoryType>
+        <PackageVersion>3.0.2</PackageVersion>
+        <AssemblyVersion>3.0.2</AssemblyVersion>
+        <FileVersion>3.0.2</FileVersion>
+        <NeutralLanguage>en-NG</NeutralLanguage>
+        <TargetFramework>netstandard1.0</TargetFramework>
+        <LangVersion>10</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>
