@@ -1,98 +1,137 @@
-# shortid
+# shortid 🆔
 
-[![Build Status](https://travis-ci.org/bolorundurowb/shortid.svg?branch=master)](https://travis-ci.org/bolorundurowb/shortid)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![NuGet Badge](https://buildstats.info/nuget/shortid)](https://www.nuget.org/packages/shortid) [![Coverage Status](https://coveralls.io/repos/github/bolorundurowb/shortid/badge.svg?branch=master)](https://coveralls.io/github/bolorundurowb/shortid?branch=master)
+[![Build Status](https://travis-ci.org/bolorundurowb/shortid.svg?branch=master)](https://travis-ci.org/bolorundurowb/shortid)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  ![NuGet Version](https://img.shields.io/nuget/v/shortid)  [![Coverage Status](https://coveralls.io/repos/github/bolorundurowb/shortid/badge.svg?branch=master)](https://coveralls.io/github/bolorundurowb/shortid?branch=master)
 
-## About ShortId
+---
 
-A CSharp library to generate completely random short id's. They can be used as primary keys or unique identifiers. This library is different in that you can specify the length of the ids to be generated. This library is thread-safe and can generate millions of unique ids across multiple threads.
+## About ShortId 📜
 
-## Getting Started
+**ShortId** is a lightweight and efficient C# library designed to generate completely random, short, and unique identifiers. These IDs are perfect for use as primary keys, unique identifiers, or any scenario where you need a compact, random string. 🎯
 
-To make use of the `shortid`, add it to your project via the Nuget package manager UI or console via this command:
+What sets **ShortId** apart is its flexibility—you can specify the length of the IDs (between 8 and 15 characters) and customize the character set. It’s also **thread-safe**, making it ideal for high-performance applications that require generating millions of unique IDs across multiple threads. 💪
 
-#### Package Manager
+---
 
-```
+## Getting Started 🚀
+
+### Installation 📦
+
+You can add **ShortId** to your project using one of the following methods:
+
+#### **Package Manager**
+```cmd
 Install-Package shortid
 ```
 
-#### .NET CLI
-```
-> dotnet add package shortid
+#### **.NET CLI**
+```bash
+dotnet add package shortid
 ```
 
-#### PackageReference
-```csharp
+#### **PackageReference**
+```xml
 <PackageReference Include="shortid" />
 ```
 
-## Usage
+---
 
-Add the following using command to the top of your csharp code file:
+## Usage 🛠️
 
+### Add the Namespace
+First, include the **ShortId** namespace in your code:
 ```csharp
 using shortid;
 using shortid.Configuration;
 ```
 
-This gives your code access the classes and methods of the `shortid` namespace.
-
-To generate a unique id of any length between 8 and 15, you call the `Generate` method without parameters.
-
+### Generate a Random ID
+To generate a random ID of default length (between 8 and 15 characters), simply call the `Generate` method:
 ```csharp
 string id = ShortId.Generate();
-// id = KXTR_VzGVUoOY
+// Example output: KXTR_VzGVUoOY
 ```
 
-If you want to include numbers in the generated id, then you call the `Generate` method with options indicating your preference.
+---
 
+### Customize ID Generation 🎨
+
+**ShortId** provides several options to tailor the generated IDs to your needs:
+
+#### **Include Numbers**
 ```csharp
 var options = new GenerationOptions(useNumbers: true);
 string id = ShortId.Generate(options);
-// id = O_bBY-YUkJg
+// Example output: O_bBY-YUkJg
 ```
 
-If you do not want special characters *i.e _ and -* in your generated id, then call the `Generate` method with options indicating your preferences.
-
+#### **Exclude Special Characters**
 ```csharp
 var options = new GenerationOptions(useSpecialCharacters: false);
 string id = ShortId.Generate(options);
-// id = waBfk3z
+// Example output: waBfk3z
 ```
 
-If you want to specify the length of the generated id, call the `Generate` method with options indicating your preferences.
-
+#### **Specify ID Length**
 ```csharp
 var options = new GenerationOptions(length: 9);
 string id = ShortId.Generate(options);
-// id = M-snXzBkj
+// Example output: M-snXzBkj
 ```
 
+---
 
-## Customize ShortId
+## Customize ShortId 🎛️
 
-`ShortId` has several features that help with customizing the ids generated. Characters sets can be introduced and the random number generator can be seeded.
+**ShortId** allows you to fully customize the character set and even seed the random number generator for reproducible results.
 
-To change the character set in use, run the following:
-
+### Change the Character Set
+You can define your own character set for ID generation:
 ```csharp
-string characters = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫"; //whatever you want;
+string characters = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫"; // Custom character set
 ShortId.SetCharacters(characters);
 ```
 
-**NOTE: the new character set must not be `null`, an empty string or whitespace. Also, all whitespace and duplicate characters would be removed, finally the character set cannot be less than 50 characters.**
+**Note:**
+- The character set must contain at least **50 unique characters**.
+- Duplicate and whitespace characters are automatically removed.
 
-`ShortId` also allows the seed for the random number generator to be set.
+---
 
-To set the seed, run the following:
-
+### Set a Random Seed
+For reproducible results, you can set a seed for the random number generator:
 ```csharp
 int seed = 1939048828;
 ShortId.SetSeed(seed);
 ```
 
-Finally, `ShortId` allows for all customizations to be reset using the following:
+---
 
+### Reset Customizations
+To reset all customizations (character set, seed, etc.) to their defaults, use the `Reset` method:
 ```csharp
 ShortId.Reset();
 ```
+
+---
+
+## Why Use ShortId? 🌟
+
+- **Flexible Length**: Generate IDs between 8 and 15 characters long.
+- **Customizable**: Use your own character set or exclude special characters.
+- **Thread-Safe**: Perfect for multi-threaded applications.
+- **Lightweight**: Minimal overhead, maximum performance.
+- **Easy to Use**: Simple API with just a few methods.
+
+---
+
+## License 📜
+
+**ShortId** is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## Get Started Today! 🎉
+
+Whether you need unique IDs for database keys, URLs, or any other purpose, **ShortId** has you covered. Install the package, follow the examples, and start generating unique IDs in seconds! ⏱️
+
+**Happy Coding!** 🚀
