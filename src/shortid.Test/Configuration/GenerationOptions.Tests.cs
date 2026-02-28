@@ -1,4 +1,4 @@
-using FluentAssertions;
+using Shouldly;
 using shortid.Configuration;
 using Xunit;
 
@@ -13,16 +13,13 @@ namespace shortid.Test.Configuration
 
             options
                 .Length
-                .Should()
-                .BeGreaterThan(0);
+                .ShouldBeGreaterThan(0);
             options
                 .UseNumbers
-                .Should()
-                .BeFalse();
+                .ShouldBeFalse();
             options
                 .UseSpecialCharacters
-                .Should()
-                .BeTrue();
+                .ShouldBeTrue();
         }
 
         [Fact]
@@ -32,12 +29,10 @@ namespace shortid.Test.Configuration
 
             options
                 .Length
-                .Should()
-                .BeGreaterThan(6);
+                .ShouldBeGreaterThan(6);
             options
                 .Length
-                .Should()
-                .BeLessThan(15);
+                .ShouldBeLessThan(15);
         }
 
         [Fact]
@@ -51,16 +46,13 @@ namespace shortid.Test.Configuration
 
             options
                 .Length
-                .Should()
-                .Be(length);
+                .ShouldBe(length);
             options
                 .UseNumbers
-                .Should()
-                .Be(useNumbers);
+                .ShouldBe(useNumbers);
             options
                 .UseSpecialCharacters
-                .Should()
-                .Be(useSpecial);
+                .ShouldBe(useSpecial);
         }
     }
 }
