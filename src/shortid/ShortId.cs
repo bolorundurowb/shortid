@@ -32,8 +32,8 @@ public static class ShortId
         if (options == null)
             throw new ArgumentNullException(nameof(options));
 
-        if (options.Length < Constants.MinimumAutoLength)
-            throw new ArgumentException($"Length must be at least {Constants.MinimumAutoLength}.");
+        if (options.Length < Constants.MinimumOutputLength)
+            throw new ArgumentException($"Length must be at least {Constants.MinimumOutputLength}.");
 
         var currentPool = _pool;
         Span<char> buffer = stackalloc char[options.Length];

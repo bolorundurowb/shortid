@@ -25,7 +25,7 @@ public class ShortIdOptions(
 
     /// <summary>
     /// Determines the length of the generated id.
-    /// Default: a random generated id length between 8 and 14 characters.
+    /// Default: a random generated id length between 10 and 14 characters.
     /// </summary>
     public int Length { get; } = length ??
                                  CommonUtilities.GenerateNumberInRange(Constants.MinimumAutoLength,
