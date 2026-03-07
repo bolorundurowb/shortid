@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>3.0.2</Version>
         <Copyright>© 2017-2026 , Bolorunduro Winner-Timothy. All Rights reserved.</Copyright>
         <PackageLicenseUrl>https://github.com/bolorundurowb/shortid/blob/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/bolorundurowb/shortid/</PackageProjectUrl>
@@ -16,8 +15,6 @@
         <Title>ShortID</Title>
         <RepositoryType>git</RepositoryType>
         <PackageVersion>3.1.0</PackageVersion>
-        <AssemblyVersion>3.1.0</AssemblyVersion>
-        <FileVersion>3.1.0</FileVersion>
         <NeutralLanguage>en-NG</NeutralLanguage>
         <TargetFramework>netstandard1.0</TargetFramework>
         <LangVersion>14</LangVersion>
