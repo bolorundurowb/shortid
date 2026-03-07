@@ -35,7 +35,8 @@ public static class ShortId
     /// <exception cref="ArgumentException">Thrown when options.Length is less than 8.</exception>
     public static string Generate(GenerationOptions options)
     {
-        if (options == null) throw new ArgumentNullException(nameof(options));
+        if (options == null)
+            throw new ArgumentNullException(nameof(options));
 
         if (options.Length < Constants.MinimumAutoLength)
             throw new ArgumentException(
@@ -43,13 +44,16 @@ public static class ShortId
 
         var characterPool = _pool;
         var poolBuilder = new StringBuilder(characterPool);
-        if (options.UseNumbers) poolBuilder.Append(Numbers);
 
-        if (options.UseSpecialCharacters) poolBuilder.Append(Specials);
+        if (options.UseNumbers)
+            poolBuilder.Append(Numbers);
+
+        if (options.UseSpecialCharacters)
+            poolBuilder.Append(Specials);
 
         var pool = poolBuilder.ToString();
-
         var output = new char[options.Length];
+
         for (var i = 0; i < options.Length; i++)
             lock (ThreadLock)
             {
@@ -68,7 +72,8 @@ public static class ShortId
     /// <exception cref="InvalidOperationException">Thrown when the new character set is less than 50 characters.</exception>
     public static void SetCharacters(string characters)
     {
-        if (string.IsNullOrWhiteSpace(characters)) throw new ArgumentException("The replacement characters must not be null or empty.");
+        if (string.IsNullOrWhiteSpace(characters))
+            throw new ArgumentException("The replacement characters must not be null or empty.");
 
         var charSet = characters
             .ToCharArray()
