@@ -41,7 +41,7 @@ public static class ShortId
 
         if (options.GenerateSequential)
         {
-            var timestamp = CommonUtilities.GetTimestampInDeciseconds();
+            var timestamp = CommonUtilities.GetTimestampInCentiseconds();
             var prefix = CommonUtilities.EncodeTimestamp(timestamp);
 
             // improved memory usage by avoiding StringBuilder allocation

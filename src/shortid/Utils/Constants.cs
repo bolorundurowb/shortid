@@ -3,7 +3,7 @@ namespace shortid.Utils;
 internal static class Constants
 {
     public const int MinimumOutputLength = 8;
-    
+
     // to reduce the chance of collision within a million ids
     public const int MinimumAutoLength = 10;
 
