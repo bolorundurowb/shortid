@@ -52,8 +52,8 @@ public class ShortIdTests
         resultOne.ShouldNotBeNullOrEmpty();
         resultTwo.ShouldNotBeNullOrEmpty();
 
-        // the first 5 characters should be the same
-        resultOne[..5].ShouldBe(resultTwo[..5]);
+        // the first 6 characters should be the same
+        resultOne[..6].ShouldBe(resultTwo[..6]);
     }
 
     [Fact]
