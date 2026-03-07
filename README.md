@@ -59,24 +59,33 @@ string id = ShortId.Generate();
 
 #### **Include Numbers**
 ```csharp
-var options = new GenerationOptions(useNumbers: true);
+var options = new ShortIdOptions(useNumbers: true);
 string id = ShortId.Generate(options);
 // Example output: O_bBY-YUkJg
 ```
 
 #### **Exclude Special Characters**
 ```csharp
-var options = new GenerationOptions(useSpecialCharacters: false);
+var options = new ShortIdOptions(useSpecialCharacters: false);
 string id = ShortId.Generate(options);
 // Example output: waBfk3z
 ```
 
 #### **Specify ID Length**
 ```csharp
-var options = new GenerationOptions(length: 9);
+var options = new ShortIdOptions(length: 9);
 string id = ShortId.Generate(options);
 // Example output: M-snXzBkj
 ```
+
+#### **Generate Sequential IDs**
+For scenarios where you need IDs to be monotonic (i.e., each ID is greater than the previous one), you can enable sequential ID generation:
+```csharp
+var options = new ShortIdOptions(generateSequential: true);
+string id = ShortId.Generate(options);
+// Example output: 00000r_v
+```
+When this option is enabled, the first 6 characters of the ID represent a Base85 encoded timestamp, followed by random characters to complete the requested length.
 
 ---
 

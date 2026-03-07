@@ -1,11 +1,21 @@
-namespace shortid.Utils
+namespace shortid.Utils;
+
+internal static class Constants
 {
-    internal static class Constants
-    {
-        public const int MinimumAutoLength = 8;
+    public const int MinimumOutputLength = 8;
 
-        public const int MaximumAutoLength = 14;
+    // to reduce the chance of collision within a million ids
+    public const int MinimumAutoLength = 10;
 
-        public const int MinimumCharacterSetLength = 50;
-    }
+    public const int MaximumAutoLength = 15;
+
+    public const int MinimumCharacterSetLength = 50;
+
+    public const string Bigs = "ABCDEFGHIJKLMNPQRSTUVWXY";
+
+    public const string Smalls = "abcdefghjklmnopqrstuvwxyz";
+
+    public const string Numbers = "0123456789";
+
+    public const string Specials = "_-";
 }

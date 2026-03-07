@@ -1,30 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Version>3.0.2</Version>
-        <Copyright>© 2017 , Bolorunduro Winner-Timothy. All Rights reserved.</Copyright>
+        <Copyright>© 2017-2026 , Bolorunduro Winner-Timothy. All Rights reserved.</Copyright>
         <PackageLicenseUrl>https://github.com/bolorundurowb/shortid/blob/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/bolorundurowb/shortid/</PackageProjectUrl>
         <PackageIconUrl>https://members.orcid.org/sites/default/files/vector_iD_icon.svg</PackageIconUrl>
         <RepositoryUrl>https://github.com/bolorundurowb/shortid/</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>shortid short id databse identifier key primarykey mongodb sql</PackageTags>
-        <PackageReleaseNotes>- include readme</PackageReleaseNotes>
-        <Authors>Bolorunduro Winner-Timothy</Authors>
-        <Description>A library that generates random identifiers from 7 to 14 characters. Identifiers generated can be used as primary keys for databases or unique identifiers.</Description>
+        <PackageReleaseNotes>- add support for monotonic/sequential id generation
+- move the generation options to the package root</PackageReleaseNotes>
+        <Authors>Winner-Timothy Bolorunduro</Authors>
+        <Description>A library that generates random identifiers with a minimum length of 8 characters. Identifiers generated can be used as primary keys for databases or unique identifiers.</Description>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Title>shortid</Title>
+        <Title>ShortID</Title>
         <RepositoryType>git</RepositoryType>
-        <PackageVersion>3.0.2</PackageVersion>
-        <AssemblyVersion>3.0.2</AssemblyVersion>
-        <FileVersion>3.0.2</FileVersion>
+        <PackageVersion>5.0.0</PackageVersion>
         <NeutralLanguage>en-NG</NeutralLanguage>
-        <TargetFramework>netstandard1.0</TargetFramework>
-        <LangVersion>10</LangVersion>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
+        <RootNamespace>ShortId</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Memory" Version="4.6.3" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="shortid.Test" />
     </ItemGroup>
 </Project>
