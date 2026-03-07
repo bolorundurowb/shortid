@@ -4,6 +4,7 @@
     <IsPackable>false</IsPackable>
     <LangVersion>14</LangVersion>
     <Nullable>enable</Nullable>
+    <RootNamespace>ShortId.Test</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.msbuild" Version="8.0.0">
