@@ -7,14 +7,15 @@
         <RepositoryUrl>https://github.com/bolorundurowb/shortid/</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>shortid short id databse identifier key primarykey mongodb sql</PackageTags>
-        <PackageReleaseNotes>- add support for mono tonic id generation</PackageReleaseNotes>
+        <PackageReleaseNotes>- add support for monotonic/sequential id generation
+- move the generation options to the package root</PackageReleaseNotes>
         <Authors>Winner-Timothy Bolorunduro</Authors>
         <Description>A library that generates random identifiers from 7 to 14 characters. Identifiers generated can be used as primary keys for databases or unique identifiers.</Description>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>ShortID</Title>
         <RepositoryType>git</RepositoryType>
-        <PackageVersion>3.1.0</PackageVersion>
+        <PackageVersion>4.0.0</PackageVersion>
         <NeutralLanguage>en-NG</NeutralLanguage>
         <TargetFramework>netstandard1.0</TargetFramework>
         <LangVersion>14</LangVersion>

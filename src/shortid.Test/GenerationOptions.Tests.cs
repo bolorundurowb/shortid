@@ -1,15 +1,14 @@
 using Shouldly;
-using shortid.Configuration;
 using Xunit;
 
-namespace shortid.Test.Configuration;
+namespace shortid.Test;
 
-public class GenerationOptionsTests
+public class ShortIdOptionsTests
 {
     [Fact]
     public void ShouldSetDefaultsOnInstantiation()
     {
-        var options = new GenerationOptions();
+        var options = new ShortIdOptions();
 
         options
             .Length
@@ -25,7 +24,7 @@ public class GenerationOptionsTests
     [Fact]
     public void ShouldAssignRandomLengthOnInstantiation()
     {
-        var options = new GenerationOptions();
+        var options = new ShortIdOptions();
 
         options
             .Length
@@ -42,7 +41,7 @@ public class GenerationOptionsTests
         const bool useSpecial = false;
         const int length = 17;
 
-        var options = new GenerationOptions(useNumbers, useSpecial, length);
+        var options = new ShortIdOptions(useNumbers, useSpecial, length);
 
         options
             .Length

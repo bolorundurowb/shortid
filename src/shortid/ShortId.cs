@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Text;
-using shortid.Configuration;
 using shortid.Utils;
 
 namespace shortid;
@@ -24,7 +23,7 @@ public static class ShortId
     /// i.e random length between 8 and 14, with special characters and no numbers
     /// </summary>
     /// <returns>A random unique string.</returns>
-    public static string Generate() => Generate(new GenerationOptions());
+    public static string Generate() => Generate(new ShortIdOptions());
 
     /// <summary>
     /// Generates a random string to match the specified options.
@@ -33,7 +32,7 @@ public static class ShortId
     /// <returns>A random unique string.</returns>
     /// <exception cref="ArgumentNullException">Thrown when options is null.</exception>
     /// <exception cref="ArgumentException">Thrown when options.Length is less than 8.</exception>
-    public static string Generate(GenerationOptions options)
+    public static string Generate(ShortIdOptions options)
     {
         if (options == null)
             throw new ArgumentNullException(nameof(options));

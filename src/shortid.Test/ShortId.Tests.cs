@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Shouldly;
-using shortid.Configuration;
 using Xunit;
 
 namespace shortid.Test;
@@ -59,7 +58,7 @@ public class ShortIdTests
     [Fact]
     public void GenerateShouldSucceedWithLengthOptions()
     {
-        var options = new GenerationOptions(length: 22);
+        var options = new ShortIdOptions(length: 22);
         var response = ShortId.Generate(options);
 
         response.ShouldNotBeNullOrEmpty();
@@ -84,7 +83,7 @@ public class ShortIdTests
     [Fact]
     public void GenerateShouldThrowWhenLengthIsTooSmall()
     {
-        var options = new GenerationOptions(length: 7);
+        var options = new ShortIdOptions(length: 7);
         var action = () => { ShortId.Generate(options); };
 
         Should.Throw<ArgumentException>(action);
@@ -102,7 +101,7 @@ public class ShortIdTests
             
         // Let's test that if we use numbers, the output CAN contain numbers.
         // And if we don't use numbers, it doesn't.
-        var options = new GenerationOptions(useNumbers: true, useSpecialCharacters: false, length: 100);
+        var options = new ShortIdOptions(useNumbers: true, useSpecialCharacters: false, length: 100);
         var response = ShortId.Generate(options);
         response.Any(char.IsNumber).ShouldBeTrue();
     }
@@ -111,7 +110,7 @@ public class ShortIdTests
     public void GenerateShouldNotUseNumbersWhenNotSpecified()
     {
         ShortId.Reset();
-        var options = new GenerationOptions(useNumbers: false, useSpecialCharacters: false, length: 100);
+        var options = new ShortIdOptions(useNumbers: false, useSpecialCharacters: false, length: 100);
         var response = ShortId.Generate(options);
         response.Any(char.IsNumber).ShouldBeFalse();
     }
@@ -121,7 +120,7 @@ public class ShortIdTests
     {
         ShortId.Reset();
         const string specialCharacters = "_-";
-        var options = new GenerationOptions(useNumbers: false, useSpecialCharacters: false, length: 100);
+        var options = new ShortIdOptions(useNumbers: false, useSpecialCharacters: false, length: 100);
         var response = ShortId.Generate(options);
         response.Any(c => specialCharacters.Contains(c)).ShouldBeFalse();
     }
@@ -131,7 +130,7 @@ public class ShortIdTests
     {
         ShortId.Reset();
         const string specialCharacters = "_-";
-        var options = new GenerationOptions(useNumbers: false, useSpecialCharacters: true);
+        var options = new ShortIdOptions(useNumbers: false, useSpecialCharacters: true);
             
         // We need to set characters to something that only has specials and no letters to truly test this,
         // but the current implementation appends specials to the pool.
@@ -151,7 +150,7 @@ public class ShortIdTests
 
         Should.NotThrow(action);
             
-        var response = ShortId.Generate(new GenerationOptions(useNumbers: false, useSpecialCharacters: false, length: 100));
+        var response = ShortId.Generate(new ShortIdOptions(useNumbers: false, useSpecialCharacters: false, length: 100));
         response.ShouldNotContain(" ");
     }
 }

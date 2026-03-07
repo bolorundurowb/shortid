@@ -1,15 +1,15 @@
 using shortid.Utils;
 
-namespace shortid.Configuration;
+namespace shortid;
 
 /// <summary>
 /// Represents options for configuring the generation of unique identifiers in the generation process.
 /// </summary>
-public class GenerationOptions(
+public class ShortIdOptions(
     bool useNumbers = false,
     bool useSpecialCharacters = true,
     int? length = null,
-    bool generateMonotonic = false)
+    bool generateSequential = false)
 {
     /// <summary>
     /// Determines whether numbers are used in generating the id.
@@ -35,5 +35,5 @@ public class GenerationOptions(
     /// and sequential ordering of ids.
     /// Default: false.
     /// </summary>
-    public bool GenerateMonotonic { get; } = generateMonotonic;
+    public bool GenerateSequential { get; } = generateSequential;
 }
