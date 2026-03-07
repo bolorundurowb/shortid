@@ -7,7 +7,7 @@ internal static class Constants
     // to reduce the chance of collision within a million ids
     public const int MinimumAutoLength = 10;
 
-    public const int MaximumAutoLength = 14;
+    public const int MaximumAutoLength = 15;
 
     public const int MinimumCharacterSetLength = 50;
 
