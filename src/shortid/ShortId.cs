@@ -52,13 +52,28 @@ public static class ShortId
 
         var pool = poolBuilder.ToString();
         var output = new char[options.Length];
+        var prefix = string.Empty;
+
+        if (options.GenerateSequential)
+        {
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            prefix = CommonUtilities.EncodeTimestamp(timestamp);
+        }
 
         for (var i = 0; i < options.Length; i++)
+        {
+            if (i < prefix.Length)
+            {
+                output[i] = prefix[i];
+                continue;
+            }
+
             lock (ThreadLock)
             {
                 var charIndex = _random.Next(0, pool.Length);
                 output[i] = pool[charIndex];
             }
+        }
 
         return new string(output);
     }
