@@ -27,7 +27,7 @@ public class GenerationOptions(
     /// Determines the length of the generated id.
     /// Default: a random generated id length between 8 and 14 characters.
     /// </summary>
-    public int Length { get; } = length ?? RandomUtils.GenerateNumberInRange(Constants.MinimumAutoLength, Constants.MaximumAutoLength);
+    public int Length { get; } = length ?? Utils.Utils.GenerateNumberInRange(Constants.MinimumAutoLength, Constants.MaximumAutoLength);
 
     /// <summary>
     /// Specifies whether the generated id should follow a monotonic sequence, ensuring
