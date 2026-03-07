@@ -9,7 +9,7 @@ namespace shortid.Test;
 public class ShortIdTests
 {
     [Fact]
-    public void Generate_WithDefaultOptions_ReturnsNonEmptyString()
+    public void Generate_DefaultOptions_ShouldReturnNonEmptyString()
     {
         var result = ShortId.Generate();
 
@@ -18,7 +18,7 @@ public class ShortIdTests
     }
 
     [Fact]
-    public void Generate_WithCustomOptions_ReturnsCorrectLength()
+    public void Generate_CustomOptions_ShouldReturnCorrectLength()
     {
         var options = new ShortIdOptions(length: 10);
 
@@ -29,21 +29,21 @@ public class ShortIdTests
     }
 
     [Fact]
-    public void Generate_WithNullOptions_ThrowsArgumentNullException()
+    public void Generate_NullOptions_ShouldThrowArgumentNullException()
     {
         ShortIdOptions options = null!;
         Should.Throw<ArgumentNullException>(() => ShortId.Generate(options));
     }
 
     [Fact]
-    public void Generate_WithInvalidLength_ThrowsArgumentException()
+    public void Generate_InvalidLength_ShouldThrowArgumentException()
     {
         var options = new ShortIdOptions(length: 7);
         Should.Throw<ArgumentException>(() => ShortId.Generate(options));
     }
 
     [Fact]
-    public void Generate_WithSequentialOption_StartsWithTimestampPrefix()
+    public void Generate_SequentialOption_ShouldStartWithTimestampPrefix()
     {
         var options = new ShortIdOptions(generateSequential: true);
         var resultOne = ShortId.Generate(options);
@@ -57,7 +57,7 @@ public class ShortIdTests
     }
 
     [Fact]
-    public void Generate_ShouldNotUseNumbersWhenNotSpecified()
+    public void Generate_NoNumbersOption_ShouldExcludeNumbers()
     {
         ShortId.Reset();
         var options = new ShortIdOptions(useNumbers: false, useSpecialCharacters: false, length: 100);
@@ -66,7 +66,7 @@ public class ShortIdTests
     }
 
     [Fact]
-    public void Generate_ShouldNotUseSpecialCharactersWhenNotSpecified()
+    public void Generate_NoSpecialCharactersOption_ShouldExcludeSpecialCharacters()
     {
         ShortId.Reset();
         var options = new ShortIdOptions(useNumbers: false, useSpecialCharacters: false, length: 100);
@@ -75,7 +75,7 @@ public class ShortIdTests
     }
 
     [Fact]
-    public void SetCharacters_WithValidCharacters_UpdatesPool()
+    public void SetCharacters_ValidCharacters_ShouldUpdatePool()
     {
         var newChars = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫";
 
@@ -87,31 +87,31 @@ public class ShortIdTests
     }
 
     [Fact]
-    public void SetCharacters_WithInvalidCharacters_ThrowsException()
+    public void SetCharacters_InvalidCharacters_ShouldThrowException()
     {
         var invalidChars = string.Empty;
         Should.Throw<ArgumentException>(() => ShortId.SetCharacters(invalidChars));
     }
 
     [Fact]
-    public void SetCharacters_WithTooFewCharacters_ThrowsException()
+    public void SetCharacters_TooFewCharacters_ShouldThrowException()
     {
         var tooFewChars = "ABC";
         Should.Throw<InvalidOperationException>(() => ShortId.SetCharacters(tooFewChars));
     }
 
     [Fact]
-    public void SetCharacters_ShouldRemoveWhitespaceAndDuplicates()
+    public void SetCharacters_WhitespaceAndDuplicates_ShouldThrowException()
     {
         // char set with only whitespace and duplicate chars, even though it exceeds the minimum length. it should fail validation
         const string charSet =
-            " Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ ";
+            " Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ ";
 
         Should.Throw<InvalidOperationException>(() => { ShortId.SetCharacters(charSet); });
     }
 
     [Fact]
-    public void SetSeed_ChangesRandomOutput()
+    public void SetSeed_ShouldChangeRandomOutput()
     {
         var seed = 12345;
         var options = new ShortIdOptions(length: 10);
@@ -126,14 +126,14 @@ public class ShortIdTests
     }
 
     [Fact]
-    public void SetSeed_WorksWithValidCharSet()
+    public void SetSeed_ValidCharSet_ShouldNotThrow()
     {
         const string seed = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫";
         Should.NotThrow(() => { ShortId.SetCharacters(seed); });
     }
 
     [Fact]
-    public void Reset_RestoresDefaultPoolAndRandom()
+    public void Reset_ShouldRestoreDefaultPoolAndRandom()
     {
         const string seed = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫";
         ShortId.SetCharacters(seed);
