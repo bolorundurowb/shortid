@@ -38,19 +38,17 @@ public static class ShortId
         var currentPool = _pool;
         Span<char> buffer = stackalloc char[options.Length];
         var currentIndex = 0;
-        
+
         if (options.GenerateSequential)
         {
-            // Granularity changed to milliseconds
-            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var timestamp = CommonUtilities.GetTimestampInDeciseconds();
             var prefix = CommonUtilities.EncodeTimestamp(timestamp);
 
-            // Efficiently copy the prefix using Span
+            // improved memory usage by avoiding StringBuilder allocation
             prefix.AsSpan().CopyTo(buffer);
             currentIndex = prefix.Length;
         }
-        
-        // Avoid StringBuilder allocation for pool construction
+
         var activePool = currentPool;
         if (options.UseNumbers || options.UseSpecialCharacters)
         {

@@ -7,12 +7,10 @@ internal static class CommonUtilities
 {
     private static readonly ThreadLocal<Random> Random = new(() => new Random());
     
-    private const string Base62Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    // Using the Z85 standard alphabet for the remaining 23 characters
+    private static readonly DateTimeOffset ShortIdEpoch = new(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
     private const string Base85Alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#";
 
-    private const long MaxBase62 = 916_132_831;   // 62^5 - 1
-    private const long MaxBase85 = 4_437_053_124; // 85^5 - 1
+    private const long MaxBase85 = 377_149_515_624; // 85^6 - 1
 
     /// <summary>
     /// Generates a random integer value within the specified range [min, max).
@@ -23,46 +21,48 @@ internal static class CommonUtilities
     public static int GenerateNumberInRange(int min, int max) => Random.Value.Next(min, max);
 
     /// <summary>
-    /// Encodes a Unix timestamp in seconds into a string representation using a specified base
-    /// encoding (Base62 or Base85) depending on the timestamp's value.
+    /// Computes the current timestamp in deciseconds relative to a predefined epoch.
     /// </summary>
-    /// <param name="unixTimestampInSeconds">The Unix timestamp in seconds to encode. Must be non-negative.</param>
-    /// <returns>A string representation of the encoded timestamp. The encoding will use Base62 for
-    /// values up to 62^5 - 1 and Base85 for values up to 85^5 - 1.</returns>
+    /// <returns>The number of deciseconds elapsed since the predefined epoch.</returns>
+    public static long GetTimestampInDeciseconds() => (long)(DateTimeOffset.UtcNow - ShortIdEpoch).TotalMilliseconds / 100;
+
+    /// <summary>
+    /// Encodes the given number of epochs measured in deciseconds into a Base85-encoded string.
+    /// </summary>
+    /// <param name="epochTimestampInDeciSeconds">The time in deciseconds since the epoch to encode.</param>
+    /// <returns>A Base85-encoded string representation of the provided timestamp.</returns>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// Thrown if <paramref name="unixTimestampInSeconds"/> is negative or exceeds the maximum allowable
-    /// value for Base85 encoding.
+    /// Thrown when <paramref name="epochTimestampInDeciSeconds"/> is negative or exceeds the maximum allowable value for Base85 encoding.
     /// </exception>
-    public static string EncodeTimestamp(long unixTimestampInSeconds)
+    public static string EncodeTimestamp(long epochTimestampInDeciSeconds)
     {
-        // Utilises C# switch expression for clean evaluation
-        return unixTimestampInSeconds switch
+        // utilises C# switch expression for clean evaluation
+        return epochTimestampInDeciSeconds switch
         {
-            < 0 => throw new ArgumentOutOfRangeException(nameof(unixTimestampInSeconds), "Value cannot be negative."),
-            <= MaxBase62 => EncodeWithAlphabet(unixTimestampInSeconds, Base62Alphabet, 62),
-            <= MaxBase85 => EncodeWithAlphabet(unixTimestampInSeconds, Base85Alphabet, 85),
-            _ => throw new ArgumentOutOfRangeException(nameof(unixTimestampInSeconds), $"Value exceeds .")
+            < 0 => throw new ArgumentOutOfRangeException(nameof(epochTimestampInDeciSeconds), "Input value cannot be negative."),
+            <= MaxBase85 => Base85Encode(epochTimestampInDeciSeconds),
+            _ => throw new ArgumentOutOfRangeException(nameof(epochTimestampInDeciSeconds), "Input exceeds maximum encodable value.")
         };
     }
 
-    private static string EncodeWithAlphabet(long value, string alphabet, int targetBase)
+    private static string Base85Encode(long value)
     {
-        char[] buffer = new char[5];
-        int index = 4;
+        const int targetBase = 85;
+        var buffer = new char[6];
+        var index = 5;
 
         do
         {
-            buffer[index--] = alphabet[(int)(value % targetBase)];
+            buffer[index--] = Base85Alphabet[(int)(value % targetBase)];
             value /= targetBase;
         } while (value > 0);
 
         // Pad the remainder with the first alphabet character
         while (index >= 0)
         {
-            buffer[index--] = alphabet[0];
+            buffer[index--] = Base85Alphabet[0];
         }
 
-        // Return exactly 4 characters if the first padded character matches the zero-value, otherwise 5
-        return buffer[0] == alphabet[0] ? new string(buffer, 1, 4) : new string(buffer);
+        return new string(buffer);
     }
 }
