@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using shortid.Utils;
 
@@ -59,21 +60,22 @@ public static class ShortId
             var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             prefix = CommonUtilities.EncodeTimestamp(timestamp);
         }
-
-        for (var i = 0; i < options.Length; i++)
+        
+        // set the prefix values in the output array
+        for (var i = 0; i < prefix.Length; i++) 
+            output[i] = prefix[i];
+        
+        // generate all random indices at once
+        var indices = new int[options.Length - prefix.Length];
+        lock (ThreadLock)
         {
-            if (i < prefix.Length)
-            {
-                output[i] = prefix[i];
-                continue;
-            }
-
-            lock (ThreadLock)
-            {
-                var charIndex = _random.Next(0, pool.Length);
-                output[i] = pool[charIndex];
-            }
+            for (var i = 0; i < indices.Length; i++)
+                indices[i] = _random.Next(0, pool.Length);
         }
+        
+        // map indices to characters outside the lock
+        for (var i = 0; i < indices.Length; i++)
+            output[prefix.Length + i] = pool[indices[i]];
 
         return new string(output);
     }
