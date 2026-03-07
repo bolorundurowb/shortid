@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using shortid.Utils;
 
 namespace shortid;
@@ -39,45 +37,41 @@ public static class ShortId
             throw new ArgumentNullException(nameof(options));
 
         if (options.Length < Constants.MinimumAutoLength)
-            throw new ArgumentException(
-                $"The specified length of {options.Length} is less than the lower limit of {Constants.MinimumAutoLength} to avoid conflicts.");
+            throw new ArgumentException($"Length must be at least {Constants.MinimumAutoLength}.");
 
-        var characterPool = _pool;
-        var poolBuilder = new StringBuilder(characterPool);
-
-        if (options.UseNumbers)
-            poolBuilder.Append(Numbers);
-
-        if (options.UseSpecialCharacters)
-            poolBuilder.Append(Specials);
-
-        var pool = poolBuilder.ToString();
-        var output = new char[options.Length];
-        var prefix = string.Empty;
-
+        var currentPool = _pool;
+        Span<char> buffer = stackalloc char[options.Length];
+        var currentIndex = 0;
+        
         if (options.GenerateSequential)
         {
-            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            prefix = CommonUtilities.EncodeTimestamp(timestamp);
-        }
-        
-        // set the prefix values in the output array
-        for (var i = 0; i < prefix.Length; i++) 
-            output[i] = prefix[i];
-        
-        // generate all random indices at once
-        var indices = new int[options.Length - prefix.Length];
-        lock (ThreadLock)
-        {
-            for (var i = 0; i < indices.Length; i++)
-                indices[i] = _random.Next(0, pool.Length);
-        }
-        
-        // map indices to characters outside the lock
-        for (var i = 0; i < indices.Length; i++)
-            output[prefix.Length + i] = pool[indices[i]];
+            // Granularity changed to milliseconds
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var prefix = CommonUtilities.EncodeTimestamp(timestamp);
 
-        return new string(output);
+            // Efficiently copy the prefix using Span
+            prefix.AsSpan().CopyTo(buffer);
+            currentIndex = prefix.Length;
+        }
+        
+        // Avoid StringBuilder allocation for pool construction
+        var activePool = currentPool;
+        if (options.UseNumbers || options.UseSpecialCharacters)
+        {
+            activePool += options.UseNumbers ? Numbers : string.Empty;
+            activePool += options.UseSpecialCharacters ? Specials : string.Empty;
+        }
+
+        var poolSpan = activePool.AsSpan();
+
+        // Generate random characters directly into the stack buffer
+        for (var i = currentIndex; i < buffer.Length; i++)
+        {
+            buffer[i] = poolSpan[_random.Next(poolSpan.Length)];
+        }
+
+        // Create the final string directly from the Span
+        return new string(buffer.ToArray());
     }
 
     /// <summary>
