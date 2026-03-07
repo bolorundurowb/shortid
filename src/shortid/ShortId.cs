@@ -8,11 +8,7 @@ public static class ShortId
 {
     // app variables
     private static Random _random = new();
-    private const string Bigs = "ABCDEFGHIJKLMNPQRSTUVWXY";
-    private const string Smalls = "abcdefghjklmnopqrstuvwxyz";
-    private const string Numbers = "0123456789";
-    private const string Specials = "_-";
-    private static string _pool = $"{Smalls}{Bigs}";
+    private static string _pool = $"{Constants.Smalls}{Constants.Bigs}";
 
     // thread management variables
     private static readonly object ThreadLock = new();
@@ -58,8 +54,8 @@ public static class ShortId
         var activePool = currentPool;
         if (options.UseNumbers || options.UseSpecialCharacters)
         {
-            activePool += options.UseNumbers ? Numbers : string.Empty;
-            activePool += options.UseSpecialCharacters ? Specials : string.Empty;
+            activePool += options.UseNumbers ? Constants.Numbers : string.Empty;
+            activePool += options.UseSpecialCharacters ? Constants.Specials : string.Empty;
         }
 
         var poolSpan = activePool.AsSpan();
@@ -121,7 +117,7 @@ public static class ShortId
         lock (ThreadLock)
         {
             _random = new Random();
-            _pool = $"{Smalls}{Bigs}";
+            _pool = $"{Constants.Smalls}{Constants.Bigs}";
         }
     }
 }
