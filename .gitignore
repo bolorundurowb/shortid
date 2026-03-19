@@ -289,3 +289,6 @@ __pycache__/
 
 # VSCode folder
 .vscode/
+
+# Benchmark artifacts
+BenchmarkDotNet.Artifacts/
