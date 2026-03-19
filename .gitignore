@@ -291,4 +291,4 @@ __pycache__/
 .vscode/
 
 # Benchmark artifacts
-BenchmarkDotNet_Artifacts/
+BenchmarkDotNet.Artifacts/

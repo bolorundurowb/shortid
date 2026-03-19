@@ -37,7 +37,6 @@ dotnet add package shortid
 First, include the **ShortId** namespace in your code:
 ```csharp
 using shortid;
-using shortid.Configuration;
 ```
 
 ### Generate a Random ID
@@ -119,10 +118,60 @@ ShortId.Reset();
 
 ---
 
+## Benchmarks
+
+Measure throughput on your machine with the **BenchmarkDotNet** project in this repo:
+
+```bash
+cd src
+dotnet run -c Release --project shortid.Benchmarks
+```
+
+Optional quick run: append `-- -j short`. Pass any [BenchmarkDotNet CLI arguments](https://github.com/dotnet/BenchmarkDotNet/blob/master/docs/guide/ConsoleArguments.md) after `--`.
+
+A sample output snapshot is kept in [`benchmarks/SampleResults.md`](benchmarks/SampleResults.md). Absolute timings vary by CPU, OS, and .NET version—compare configurations on the **same** machine.
+
+---
+
+## Choosing length: performance vs collisions
+
+**Performance:** Fastest generation uses the **shortest** length you can accept and the **smallest** pool—`useNumbers: false` and `useSpecialCharacters: false` (49 letters only). Each extra character and larger alphabet adds a small cost (see benchmarks).
+
+**Random IDs** (default `generateSequential: false`): treat each ID as uniform over \(N^L\) possibilities, where \(L\) is length and \(N\) is the alphabet size:
+
+| Options | Approx. \(N\) |
+|---------|---------------|
+| Letters only | 49 |
+| + `_` `-` (default-style) | 51 |
+| + digits, no specials | 59 |
+| Digits + specials | 61 |
+
+For \(M\) IDs drawn independently, the usual birthday approximation for a collision is:
+
+\[
+P(\text{collision}) \approx 1 - \exp\left(-\frac{M(M-1)}{2 N^L}\right)
+\]
+
+Solve for minimum \(L\) by requiring \(N^L \gg M^2\) (e.g. \(\frac{M^2}{2N^L} &lt; 10^{-3}\) for rough “&lt;0.1%” scale).
+
+**Rule of thumb (random mode, \(N \approx 51\)):**
+
+| Expected IDs \(M\) | Suggested \(L\) (order of magnitude) |
+|-------------------:|-------------------------------------|
+| \(10^4\) | 8 is usually fine |
+| \(10^6\) | 9–10 |
+| \(10^9\) | 13+ |
+
+If you use **only letters** (\(N=49\)), add about one extra character vs the table above for similar risk.
+
+**Sequential IDs** (`generateSequential: true`): the first **6** characters are a time component; only the remaining \(L - 6\) characters are random **per centisecond**. At \(L = 8\) you only have **2** random symbols per time bucket—high collision risk if you generate many IDs in the same centisecond. Prefer **longer** IDs or non-sequential mode for burst traffic.
+
+---
+
 ## Why Use ShortId? 🌟
 
-- **Flexible Length**: Generate IDs between 8 and 15 characters long.
-- **Customizable**: Use your own character set or exclude special characters.
+- **Flexible Length**: Generate IDs from 8 characters long to whatever length you need.
+- **Customizable**: Use your own character set or exclude certain characters.
 - **Thread-Safe**: Perfect for multi-threaded applications.
 - **Lightweight**: Minimal overhead, maximum performance.
 - **Easy to Use**: Simple API with just a few methods.
