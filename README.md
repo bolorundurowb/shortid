@@ -3,14 +3,14 @@
 [![Build, Test & Coverage](https://github.com/bolorundurowb/shortid/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/bolorundurowb/shortid/actions/workflows/build-and-test.yml) [![codecov](https://codecov.io/gh/bolorundurowb/shortid/graph/badge.svg?token=XBA3CK3YIS)](https://codecov.io/gh/bolorundurowb/shortid)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  ![NuGet Version](https://img.shields.io/nuget/v/shortid) 
 
 
-**ShortId** is a lightweight and efficient C# library designed to generate completely random, short, and unique identifiers. These IDs are perfect for use as primary keys, unique identifiers, or any scenario where you need a compact, random string. 🎯
+**ShortId** is a lightweight and efficient C# library designed to generate completely random, short, and unique identifiers. These IDs are perfect for use as primary keys, unique identifiers, or any scenario where you need a compact, random string.
 
-What sets **ShortId** apart is its flexibility—you can specify the length of the IDs (between 8 and 15 characters) and customize the character set. It’s also **thread-safe**, making it ideal for high-performance applications that require generating millions of unique IDs across multiple threads. 💪
+What sets **ShortId** apart is its flexibility, you can specify the length of the IDs (minimum of 8 characters) and customise the character set. It’s also **thread-safe**, making it ideal for high-performance applications that require generating millions of unique IDs across multiple threads.
 
 
 ## Getting Started 🚀
 
-### Installation 📦
+### Installation
 
 You can add **ShortId** to your project using one of the following methods:
 
@@ -29,7 +29,6 @@ dotnet add package shortid
 <PackageReference Include="shortid" />
 ```
 
----
 
 ## Usage 🛠️
 
@@ -46,9 +45,8 @@ string id = ShortId.Generate();
 // Example output: KXTR_VzGVUoOY
 ```
 
----
 
-### Customize ID Generation 🎨
+### Customize ID Generation
 
 **ShortId** provides several options to tailor the generated IDs to your needs:
 
@@ -173,6 +171,6 @@ Sequential IDs are brilliant for database indexing because the first few charact
 
 ## Get Started Today! 🎉
 
-Whether you need unique IDs for database keys, URLs, or any other purpose, **ShortId** has you covered. Install the package, follow the examples, and start generating unique IDs in seconds! ⏱️
+Whether you need unique IDs for database keys, URLs, or any other purpose, **ShortId** has you covered. Install the package, follow the examples, and start generating unique IDs in seconds!
 
-**Happy Coding!** 🚀
+**Happy Coding!**
