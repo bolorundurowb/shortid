@@ -120,51 +120,38 @@ ShortId.Reset();
 
 ## Benchmarks
 
-Measure throughput on your machine with the **BenchmarkDotNet** project in this repo:
+You can measure throughput on your own machine using the **BenchmarkDotNet** project included in this repository:
 
 ```bash
 cd src
 dotnet run -c Release --project shortid.Benchmarks
 ```
 
-Optional quick run: append `-- -j short`. Pass any [BenchmarkDotNet CLI arguments](https://github.com/dotnet/BenchmarkDotNet/blob/master/docs/guide/ConsoleArguments.md) after `--`.
+*(Optional quick run: append `-- -j short`. Pass any [BenchmarkDotNet CLI arguments](https://github.com/dotnet/BenchmarkDotNet/blob/master/docs/guide/ConsoleArguments.md) after `--`.)*
 
-A sample output snapshot is kept in [`benchmarks/SampleResults.md`](benchmarks/SampleResults.md). Absolute timings vary by CPU, OS, and .NET version—compare configurations on the **same** machine.
+Absolute timings will vary depending on your CPU, OS, and .NET version. The findings below were recorded on an Intel Core Ultra 7 265K running .NET 8.
 
----
+### Key Performance Findings
 
-## Choosing length: performance vs collisions
+The library is extremely fast and allocates very little memory (just over 200 bytes per ID), but your configuration choices do impact generation speed:
 
-**Performance:** Fastest generation uses the **shortest** length you can accept and the **smallest** pool—`useNumbers: false` and `useSpecialCharacters: false` (49 letters only). Each extra character and larger alphabet adds a small cost (see benchmarks).
+* **Simplicity is the fastest:** Generating IDs using **only letters** is the absolute fastest method (~25 nanoseconds).
+* **Complexity adds minor overhead:** Adding numbers or special characters makes generation roughly 35% to 70% slower than using letters alone.
+* **Length barely impacts speed:** Increasing your ID length from 8 characters to 15 characters only adds about 12 nanoseconds of execution time.
+* **Sequential mode is heavier:** Generating time-based sequential IDs takes the most time (~75 nanoseconds), which is about 3x slower than a standard random letter ID.
 
-**Random IDs** (default `generateSequential: false`): treat each ID as uniform over \(N^L\) possibilities, where \(L\) is length and \(N\) is the alphabet size:
+### Choosing Your Settings: Speed vs. Uniqueness
 
-| Options | Approx. \(N\) |
-|---------|---------------|
-| Letters only | 49 |
-| + `_` `-` (default-style) | 51 |
-| + digits, no specials | 59 |
-| Digits + specials | 61 |
+When configuring ShortId, you are balancing raw generation speed against the risk of generating the same ID twice (a collision).
 
-For \(M\) IDs drawn independently, the usual birthday approximation for a collision is:
+**For maximum performance (pure speed):**
+Turn off numbers and special characters (`useNumbers: false`, `useSpecialCharacters: false`) and stick to a shorter length (e.g., 8). This is perfect for low-volume applications.
 
-\[
-P(\text{collision}) \approx 1 - \exp\left(-\frac{M(M-1)}{2 N^L}\right)
-\]
+**For high-volume applications (millions of IDs):**
+Do not sacrifice uniqueness for speed. Increase your ID length to **10–14 characters** and include numbers. The performance cost is only a few extra nanoseconds, but it drastically reduces the chance of collisions.
 
-Solve for minimum \(L\) by requiring \(N^L \gg M^2\) (e.g. \(\frac{M^2}{2N^L} &lt; 10^{-3}\) for rough “&lt;0.1%” scale).
-
-**Rule of thumb (random mode, \(N \approx 51\)):**
-
-| Expected IDs \(M\) | Suggested \(L\) (order of magnitude) |
-|-------------------:|-------------------------------------|
-| \(10^4\) | 8 is usually fine |
-| \(10^6\) | 9–10 |
-| \(10^9\) | 13+ |
-
-If you use **only letters** (\(N=49\)), add about one extra character vs the table above for similar risk.
-
-**Sequential IDs** (`generateSequential: true`): the first **6** characters are a time component; only the remaining \(L - 6\) characters are random **per centisecond**. At \(L = 8\) you only have **2** random symbols per time bucket—high collision risk if you generate many IDs in the same centisecond. Prefer **longer** IDs or non-sequential mode for burst traffic.
+**When using Sequential IDs (`generateSequential: true`):**
+Sequential IDs are brilliant for database indexing because the first few characters are based on the current time. However, because the time component takes up space, fewer characters are left for randomness. **Avoid short sequential IDs (e.g., length 8) if you expect massive traffic bursts**, as generating thousands of IDs in the exact same fraction of a second increases collision risk. Prefer longer lengths (12+) for heavy burst traffic.
 
 ---
 
