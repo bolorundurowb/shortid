@@ -7,15 +7,24 @@
         <RepositoryUrl>https://github.com/bolorundurowb/shortid/</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>shortid short id databse identifier key primarykey mongodb sql</PackageTags>
-        <PackageReleaseNotes>- add support for monotonic/sequential id generation
-- move the generation options to the package root</PackageReleaseNotes>
+        <PackageReleaseNotes>Documentation
+- README reworked for library users: clearer sections, fewer decorative elements, contributing and benchmark notes aligned with the repo.
+
+Behavior
+- Default ID length is now fixed at 15 characters when no length is passed (previously a random length between 10 and 14). Callers that assumed variable default length should set an explicit length if they need the old behavior.
+
+Performance
+- Parameterless ShortId.Generate() reuses a single default ShortIdOptions instance instead of allocating one per call.
+
+Internals
+- Default length is exposed as Constants.DefaultOutputLength (15). Random-length helpers for the old default were removed; CommonUtilities.GenerateNumberInRange was dropped as unused.</PackageReleaseNotes>
         <Authors>Winner-Timothy Bolorunduro</Authors>
         <Description>A library that generates random identifiers with a minimum length of 8 characters. Identifiers generated can be used as primary keys for databases or unique identifiers.</Description>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>ShortID</Title>
         <RepositoryType>git</RepositoryType>
-        <PackageVersion>5.0.0</PackageVersion>
+        <PackageVersion>5.1.0</PackageVersion>
         <NeutralLanguage>en-NG</NeutralLanguage>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>14</LangVersion>
