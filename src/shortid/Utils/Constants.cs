@@ -4,10 +4,8 @@ internal static class Constants
 {
     public const int MinimumOutputLength = 8;
 
-    // to reduce the chance of collision within a million ids
-    public const int MinimumAutoLength = 10;
-
-    public const int MaximumAutoLength = 15;
+    /// <summary>Default ID length when no explicit length is passed to <c>ShortIdOptions</c>.</summary>
+    public const int DefaultOutputLength = 15;
 
     public const int MinimumCharacterSetLength = 50;
 
