@@ -1,5 +1,4 @@
 using BenchmarkDotNet.Running;
-using shortid.Benchmarks;
 
 // Non-interactive: BenchmarkSwitcher prompts unless benchmarks are selected.
 var runArgs = args.Any(static a => a is "--filter" or "-f")

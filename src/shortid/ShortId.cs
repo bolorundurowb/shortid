@@ -9,16 +9,17 @@ public static class ShortId
     // app variables
     private static Random _random = new();
     private static string _pool = $"{Constants.Smalls}{Constants.Bigs}";
+    private static readonly ShortIdOptions DefaultGenerationOptions = new();
 
     // thread management variables
     private static readonly object ThreadLock = new();
 
     /// <summary>
-    /// Generates a random string to match the default generation options.
-    /// i.e random length between 8 and 14, with special characters and no numbers
+    /// Generates a random string to match the default generation options:
+    /// length <see cref="Constants.DefaultOutputLength"/>, special characters enabled, numbers disabled, non-sequential.
     /// </summary>
     /// <returns>A random unique string.</returns>
-    public static string Generate() => Generate(new ShortIdOptions());
+    public static string Generate() => Generate(DefaultGenerationOptions);
 
     /// <summary>
     /// Generates a random string to match the specified options.
@@ -58,13 +59,13 @@ public static class ShortId
 
         var poolSpan = activePool.AsSpan();
 
-        // Generate random characters directly into the stack buffer
+        // generate random characters directly into the stack buffer
         for (var i = currentIndex; i < buffer.Length; i++)
         {
             buffer[i] = poolSpan[_random.Next(poolSpan.Length)];
         }
 
-        // Create the final string directly from the Span
+        // create the final string directly from the Span
         return new string(buffer.ToArray());
     }
 

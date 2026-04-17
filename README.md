@@ -1,176 +1,171 @@
 # ShortID 🆔
 
-[![Build, Test & Coverage](https://github.com/bolorundurowb/shortid/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/bolorundurowb/shortid/actions/workflows/build-and-test.yml) [![codecov](https://codecov.io/gh/bolorundurowb/shortid/graph/badge.svg?token=XBA3CK3YIS)](https://codecov.io/gh/bolorundurowb/shortid)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  ![NuGet Version](https://img.shields.io/nuget/v/shortid) 
+[![Build, Test & Coverage](https://github.com/bolorundurowb/shortid/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/bolorundurowb/shortid/actions/workflows/build-and-test.yml) [![codecov](https://codecov.io/gh/bolorundurowb/shortid/graph/badge.svg?token=XBA3CK3YIS)](https://codecov.io/gh/bolorundurowb/shortid) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) ![NuGet Version](https://img.shields.io/nuget/v/shortid)
 
+ShortId is a small C# library for generating random, URL-friendly identifiers. It targets **.NET Standard 2.0**, so you can use it from modern .NET and .NET Framework projects. Generation is **thread-safe** and tuned for low allocation.
 
-**ShortId** is a lightweight and efficient C# library designed to generate completely random, short, and unique identifiers. These IDs are perfect for use as primary keys, unique identifiers, or any scenario where you need a compact, random string.
+Typical uses include primary keys, opaque tokens, and any place you want a compact random string instead of a GUID.
 
-What sets **ShortId** apart is its flexibility, you can specify the length of the IDs (minimum of 8 characters) and customise the character set. It’s also **thread-safe**, making it ideal for high-performance applications that require generating millions of unique IDs across multiple threads.
+## Installation
 
+**Package Manager**
 
-## Getting Started 🚀
-
-### Installation
-
-You can add **ShortId** to your project using one of the following methods:
-
-#### **Package Manager**
 ```cmd
 Install-Package shortid
 ```
 
-#### **.NET CLI**
+**.NET CLI**
+
 ```bash
 dotnet add package shortid
 ```
 
-#### **PackageReference**
+**PackageReference** (pin the version you want from [NuGet](https://www.nuget.org/packages/shortid/))
+
 ```xml
-<PackageReference Include="shortid" />
+<PackageReference Include="shortid" Version="5.0.0" />
 ```
 
+## Usage
 
-## Usage 🛠️
+Add the namespace:
 
-### Add the Namespace
-First, include the **ShortId** namespace in your code:
 ```csharp
 using shortid;
 ```
 
-### Generate a Random ID
-To generate a random ID of default length (between 8 and 15 characters), simply call the `Generate` method:
+### Basic generation
+
+Call `ShortId.Generate()` with no arguments to use the default options:
+
 ```csharp
 string id = ShortId.Generate();
-// Example output: KXTR_VzGVUoOY
+// Example: KXTR_VzGVUoOY
 ```
 
+Default behaviour (see [Options](#options) for details):
 
-### Customize ID Generation
+- Length is **15** characters unless you pass a different `length` in `ShortIdOptions`.
+- **Special characters** (`_` and `-`) may appear; **numbers are off** by default.
+- IDs are **not** sequential unless you opt in.
 
-**ShortId** provides several options to tailor the generated IDs to your needs:
+### Options
 
-#### **Include Numbers**
+Configure generation with `ShortIdOptions`:
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `useNumbers` | `false` | Include `0-9` in the character pool. |
+| `useSpecialCharacters` | `true` | Include `_` and `-` in the pool. |
+| `length` | **15** | Exact output length. Must be **at least 8**. |
+| `generateSequential` | `false` | Prefix IDs with a time-based component so lexicographic order follows generation order. |
+
+Examples:
+
 ```csharp
-var options = new ShortIdOptions(useNumbers: true);
-string id = ShortId.Generate(options);
-// Example output: O_bBY-YUkJg
+// Include digits
+var withNumbers = new ShortIdOptions(useNumbers: true);
+string id1 = ShortId.Generate(withNumbers);
+
+// No special characters
+var noSpecials = new ShortIdOptions(useSpecialCharacters: false);
+string id2 = ShortId.Generate(noSpecials);
+
+// Fixed length (minimum 8)
+var fixedLength = new ShortIdOptions(length: 9);
+string id3 = ShortId.Generate(fixedLength);
+
+// Sequential / monotonic IDs (time prefix + random suffix)
+var sequential = new ShortIdOptions(generateSequential: true);
+string id4 = ShortId.Generate(sequential);
 ```
 
-#### **Exclude Special Characters**
+When `generateSequential` is `true`, the first **six** characters encode the current time (centiseconds since the library epoch) in Base85; the rest of the string is random from the active pool. Shorter total lengths leave less room for randomness after the prefix, so prefer **12+** characters for high burst rates.
+
+### Global customisation
+
+**Custom character set**: replace the default pool (letters only before numbers/specials are added per options). The string must contain at least **50** unique non-whitespace characters; duplicates and whitespace are stripped.
+
 ```csharp
-var options = new ShortIdOptions(useSpecialCharacters: false);
-string id = ShortId.Generate(options);
-// Example output: waBfk3z
-```
-
-#### **Specify ID Length**
-```csharp
-var options = new ShortIdOptions(length: 9);
-string id = ShortId.Generate(options);
-// Example output: M-snXzBkj
-```
-
-#### **Generate Sequential IDs**
-For scenarios where you need IDs to be monotonic (i.e., each ID is greater than the previous one), you can enable sequential ID generation:
-```csharp
-var options = new ShortIdOptions(generateSequential: true);
-string id = ShortId.Generate(options);
-// Example output: 00000r_v
-```
-When this option is enabled, the first 6 characters of the ID represent a Base85 encoded timestamp, followed by random characters to complete the requested length.
-
----
-
-## Customize ShortId 🎛️
-
-**ShortId** allows you to fully customize the character set and even seed the random number generator for reproducible results.
-
-### Change the Character Set
-You can define your own character set for ID generation:
-```csharp
-string characters = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫"; // Custom character set
+string characters = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫"; // your alphabet, 50+ unique chars
 ShortId.SetCharacters(characters);
 ```
 
-**Note:**
-- The character set must contain at least **50 unique characters**.
-- Duplicate and whitespace characters are automatically removed.
+**Reproducible sequences**: set a fixed seed for the internal `Random` instance (useful for tests; avoid for security-sensitive IDs in production):
 
----
-
-### Set a Random Seed
-For reproducible results, you can set a seed for the random number generator:
 ```csharp
-int seed = 1939048828;
-ShortId.SetSeed(seed);
+ShortId.SetSeed(1939048828);
 ```
 
----
+**Reset**: restore default character pool and a new unseeded random generator:
 
-### Reset Customizations
-To reset all customizations (character set, seed, etc.) to their defaults, use the `Reset` method:
 ```csharp
 ShortId.Reset();
 ```
 
----
+`SetCharacters`, `SetSeed`, and `Reset` are synchronised and safe to call from multiple threads together with `Generate`.
+
+### Exceptions
+
+- `Generate(null)` throws `ArgumentNullException`.
+- `length` below **8** throws `ArgumentException`.
+- Invalid `SetCharacters` input throws `ArgumentException` or `InvalidOperationException` as documented in code.
 
 ## Benchmarks
 
-You can measure throughput on your own machine using the **BenchmarkDotNet** project included in this repository:
+Throughput and allocation depend on your CPU, OS, and .NET runtime. Measure on your own hardware using the **BenchmarkDotNet** project in this repository:
 
 ```bash
 cd src
 dotnet run -c Release --project shortid.Benchmarks
 ```
 
-*(Optional quick run: append `-- -j short`. Pass any [BenchmarkDotNet CLI arguments](https://github.com/dotnet/BenchmarkDotNet/blob/master/docs/guide/ConsoleArguments.md) after `--`.)*
+Optional: append `-- -j short` for a quicker run. Any [BenchmarkDotNet CLI arguments](https://github.com/dotnet/BenchmarkDotNet/blob/master/docs/guide/ConsoleArguments.md) go after `--`.
 
-Absolute timings will vary depending on your CPU, OS, and .NET version. The findings below were recorded on an Intel Core Ultra 7 265K running .NET 8.
+### Reference run (April 2026)
 
-### Key Performance Findings
+One complete run on **Windows 11**, **Intel Core Ultra 7 265K**, **.NET 8.0.26**, **BenchmarkDotNet 0.14.0**. Absolute figures will differ on other hardware; relative gaps between configurations tend to hold.
 
-The library is extremely fast and allocates very little memory (just over 200 bytes per ID), but your configuration choices do impact generation speed:
+**Length sweep** (`ShortIdLengthBenchmarks`): letters + `_`/`-`, no numbers, varying `length`:
 
-* **Simplicity is the fastest:** Generating IDs using **only letters** is the absolute fastest method (~25 nanoseconds).
-* **Complexity adds minor overhead:** Adding numbers or special characters makes generation roughly 35% to 70% slower than using letters alone.
-* **Length barely impacts speed:** Increasing your ID length from 8 characters to 15 characters only adds about 12 nanoseconds of execution time.
-* **Sequential mode is heavier:** Generating time-based sequential IDs takes the most time (~75 nanoseconds), which is about 3x slower than a standard random letter ID.
+| Length | Mean | Allocated |
+|--------|------|-------------|
+| 8 | 35.2 ns | 208 B |
+| 9 | 39.6 ns | 216 B |
+| 10 | 41.9 ns | 224 B |
+| 11 | 39.0 ns | 224 B |
+| 12 | 40.4 ns | 224 B |
+| 13 | 42.0 ns | 232 B |
+| 14 | 43.2 ns | 240 B |
+| 15 | 44.8 ns | 240 B |
 
-### Choosing Your Settings: Speed vs. Uniqueness
+Parameterless `ShortId.Generate()` matches the **length 15** row above (default options: letters, specials on, numbers off).
 
-When configuring ShortId, you are balancing raw generation speed against the risk of generating the same ID twice (a collision).
+**Option mix at length 10** (`ShortIdOptionsBenchmarks`; baseline = letters only):
 
-**For maximum performance (pure speed):**
-Turn off numbers and special characters (`useNumbers: false`, `useSpecialCharacters: false`) and stick to a shorter length (e.g., 8). This is perfect for low-volume applications.
+| Configuration | Mean | Ratio vs letters-only |
+|---------------|------|------------------------|
+| Letters only | 26.8 ns | 1.00 |
+| Letters + specials | 35.8 ns | 1.34 |
+| Letters + numbers | 36.1 ns | 1.35 |
+| Letters + numbers + specials | 60.9 ns | 2.28 |
+| Sequential (letters + specials) | 78.8 ns | 2.95 |
 
-**For high-volume applications (millions of IDs):**
-Do not sacrifice uniqueness for speed. Increase your ID length to **10–14 characters** and include numbers. The performance cost is only a few extra nanoseconds, but it drastically reduces the chance of collisions.
+**Takeaways:** A minimal character pool and shorter IDs are fastest. Each extra character class adds cost; **sequential** mode is the slowest option tested here but still sub-microsecond per ID on this machine. Allocation scales roughly with string length (about **208–240 B** per ID in the length sweep above, managed heap only).
 
-**When using Sequential IDs (`generateSequential: true`):**
-Sequential IDs are brilliant for database indexing because the first few characters are based on the current time. However, because the time component takes up space, fewer characters are left for randomness. **Avoid short sequential IDs (e.g., length 8) if you expect massive traffic bursts**, as generating thousands of IDs in the exact same fraction of a second increases collision risk. Prefer longer lengths (12+) for heavy burst traffic.
+For **speed**, prefer a short length and `useNumbers: false`, `useSpecialCharacters: false` when you can. For **collision resistance** at high volume, use at least the default **15** characters and consider including digits; sequential IDs help lexicographic ordering but need enough trailing randomness under burst traffic.
 
----
+## Contributing
 
-## Why Use ShortId? 🌟
+Contributions are welcome.
 
-- **Flexible Length**: Generate IDs from 8 characters long to whatever length you need.
-- **Customizable**: Use your own character set or exclude certain characters.
-- **Thread-Safe**: Perfect for multi-threaded applications.
-- **Lightweight**: Minimal overhead, maximum performance.
-- **Easy to Use**: Simple API with just a few methods.
+1. **Issues and pull requests**: Open an issue to discuss larger changes; pull requests should stay focused and include tests when behavior changes.
+2. **Build**: Open `src/shortid.sln` in your IDE, or from the repo root: `dotnet build src/shortid.sln`.
+3. **Tests**: `dotnet test src/shortid.Test/shortid.Test.csproj`
+4. **Benchmarks**: See [Benchmarks](#benchmarks); use Release configuration for meaningful results.
 
----
+Please match existing code style and keep public API changes backward compatible unless there is an agreed major version bump.
 
-## License 📜
+## License
 
-**ShortId** is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
----
-
-## Get Started Today! 🎉
-
-Whether you need unique IDs for database keys, URLs, or any other purpose, **ShortId** has you covered. Install the package, follow the examples, and start generating unique IDs in seconds!
-
-**Happy Coding!**
+ShortId is released under the [MIT License](LICENSE).

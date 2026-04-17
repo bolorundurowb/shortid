@@ -1,3 +1,4 @@
+using shortid.Utils;
 using Shouldly;
 using Xunit;
 
@@ -6,7 +7,7 @@ namespace shortid.Test;
 public class ShortIdOptionsTests
 {
     [Fact]
-    public void ShouldSetDefaultsOnInstantiation()
+    public void Constructor_WithoutParameters_SetsExpectedBooleanDefaults()
     {
         var options = new ShortIdOptions();
 
@@ -22,20 +23,15 @@ public class ShortIdOptionsTests
     }
 
     [Fact]
-    public void ShouldAssignRandomLengthOnInstantiation()
+    public void Constructor_WithoutParameters_SetsDefaultOutputLength()
     {
         var options = new ShortIdOptions();
 
-        options
-            .Length
-            .ShouldBeGreaterThan(6);
-        options
-            .Length
-            .ShouldBeLessThan(15);
+        options.Length.ShouldBe(Constants.DefaultOutputLength);
     }
 
     [Fact]
-    public void ShouldAllowDefaultsToBeChanged()
+    public void Constructor_WithParameters_AppliesSuppliedValues()
     {
         const bool useNumbers = true;
         const bool useSpecial = false;
