@@ -1,3 +1,4 @@
+using shortid.Utils;
 using Shouldly;
 using Xunit;
 
@@ -22,16 +23,11 @@ public class ShortIdOptionsTests
     }
 
     [Fact]
-    public void ShouldAssignRandomLengthOnInstantiation()
+    public void ShouldAssignDefaultLengthOnInstantiation()
     {
         var options = new ShortIdOptions();
 
-        options
-            .Length
-            .ShouldBeGreaterThan(6);
-        options
-            .Length
-            .ShouldBeLessThan(15);
+        options.Length.ShouldBe(Constants.DefaultOutputLength);
     }
 
     [Fact]

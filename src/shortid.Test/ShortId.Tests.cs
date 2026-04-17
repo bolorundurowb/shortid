@@ -14,7 +14,7 @@ public class ShortIdTests
         var result = ShortId.Generate();
 
         result.ShouldNotBeNullOrEmpty();
-        result.Length.ShouldBeInRange(Constants.MinimumOutputLength, Constants.MaximumAutoLength);
+        result.Length.ShouldBe(Constants.DefaultOutputLength);
     }
 
     [Fact]
