@@ -87,7 +87,7 @@ When `generateSequential` is `true`, the first **six** characters encode the cur
 **Custom character set**: replace the default pool (letters only before numbers/specials are added per options). The string must contain at least **50** unique non-whitespace characters; duplicates and whitespace are stripped.
 
 ```csharp
-string characters = "..."; // your alphabet, 50+ unique chars
+string characters = "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫"; // your alphabet, 50+ unique chars
 ShortId.SetCharacters(characters);
 ```
 

@@ -7,7 +7,7 @@ namespace shortid.Test;
 public class ShortIdOptionsTests
 {
     [Fact]
-    public void ShouldSetDefaultsOnInstantiation()
+    public void Constructor_WithoutParameters_SetsExpectedBooleanDefaults()
     {
         var options = new ShortIdOptions();
 
@@ -23,7 +23,7 @@ public class ShortIdOptionsTests
     }
 
     [Fact]
-    public void ShouldAssignDefaultLengthOnInstantiation()
+    public void Constructor_WithoutParameters_SetsDefaultOutputLength()
     {
         var options = new ShortIdOptions();
 
@@ -31,7 +31,7 @@ public class ShortIdOptionsTests
     }
 
     [Fact]
-    public void ShouldAllowDefaultsToBeChanged()
+    public void Constructor_WithParameters_AppliesSuppliedValues()
     {
         const bool useNumbers = true;
         const bool useSpecial = false;
