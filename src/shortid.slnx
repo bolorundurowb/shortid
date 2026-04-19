@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="shortid.Benchmarks/shortid.Benchmarks.csproj" />
+  <Project Path="shortid.Test/shortid.Test.csproj" />
+  <Project Path="shortid/shortid.csproj" />
+</Solution>
