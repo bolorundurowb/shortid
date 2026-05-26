@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+<!--Circular Slate Background-->
+  <circle cx="250" cy="250" r="230" fill="#2e3138"/>
+<!--"short" (anchored right, tightly before slashes)-->
+  <text x="260" y="250" text-anchor="end" dominant-baseline="central" font-family="'Liberation Mono', 'Courier New', Courier, monospace" font-size="68" font-weight="bold" fill="#FFFFFF" letter-spacing="-1.5">short</text>
+<!--First Slash (#EA596E) - parallelogram, leaned forward-->
+  <path d="M 280 205 L 296 205 L 282 295 L 266 295 Z" fill="#EA596E"/>
+<!--Second Slash (#77B255) - parallelogram, leaned forward-->
+  <path d="M 300 205 L 316 205 L 302 295 L 286 295 Z" fill="#77B255"/>
+<!--"ID" (anchored left, tightly after slashes)-->
+  <text x="316" y="250" text-anchor="start" dominant-baseline="central" font-family="'Liberation Mono', 'Courier New', Courier, monospace" font-size="68" font-weight="bold" fill="#FFFFFF" letter-spacing="-1.5">ID</text>
+</svg>
