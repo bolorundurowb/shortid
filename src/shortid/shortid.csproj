@@ -3,7 +3,7 @@
         <Copyright>© 2017-2026 , Bolorunduro Winner-Timothy. All Rights reserved.</Copyright>
         <PackageLicenseUrl>https://github.com/bolorundurowb/shortid/blob/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/bolorundurowb/shortid/</PackageProjectUrl>
-        <PackageIconUrl>https://members.orcid.org/sites/default/files/vector_iD_icon.svg</PackageIconUrl>
+        <PackageIcon>logo.png</PackageIcon>
         <RepositoryUrl>https://github.com/bolorundurowb/shortid/</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>shortid short id databse identifier key primarykey mongodb sql</PackageTags>
@@ -34,6 +34,7 @@ Internals
 
     <ItemGroup>
         <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+        <None Include="..\..\assets\logo.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
