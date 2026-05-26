@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using shortid.Utils;
-using Shouldly;
+using OmniAssert;
 using Xunit;
 
 namespace shortid.Test;
@@ -13,8 +13,9 @@ public class ShortIdTests
     {
         var result = ShortId.Generate();
 
-        result.ShouldNotBeNullOrEmpty();
-        result.Length.ShouldBe(Constants.DefaultOutputLength);
+        result.Verify().NotToBeNull();
+        result.Verify().NotToBeEmpty();
+        result.Length.Verify().ToBe(Constants.DefaultOutputLength);
     }
 
     [Fact]
@@ -24,22 +25,25 @@ public class ShortIdTests
 
         var result = ShortId.Generate(options);
 
-        result.ShouldNotBeNullOrEmpty();
-        result.Length.ShouldBe(10);
+        result.Verify().NotToBeNull();
+        result.Verify().NotToBeEmpty();
+        result.Length.Verify().ToBe(10);
     }
 
     [Fact]
     public void Generate_WithNullOptions_ThrowsArgumentNullException()
     {
         ShortIdOptions options = null!;
-        Should.Throw<ArgumentNullException>(() => ShortId.Generate(options));
+        Action act = () => ShortId.Generate(options);
+        act.Throws<ArgumentNullException>();
     }
 
     [Fact]
     public void Generate_WithLengthBelowMinimum_ThrowsArgumentException()
     {
         var options = new ShortIdOptions(length: 7);
-        Should.Throw<ArgumentException>(() => ShortId.Generate(options));
+        Action act = () => ShortId.Generate(options);
+        act.Throws<ArgumentException>();
     }
 
     [Fact]
@@ -49,11 +53,13 @@ public class ShortIdTests
         var resultOne = ShortId.Generate(options);
         var resultTwo = ShortId.Generate(options);
 
-        resultOne.ShouldNotBeNullOrEmpty();
-        resultTwo.ShouldNotBeNullOrEmpty();
+        resultOne.Verify().NotToBeNull();
+        resultOne.Verify().NotToBeEmpty();
+        resultTwo.Verify().NotToBeNull();
+        resultTwo.Verify().NotToBeEmpty();
 
         // the first 6 characters should be the same
-        resultOne[..6].ShouldBe(resultTwo[..6]);
+        resultOne[..6].Verify().ToBe(resultTwo[..6]);
     }
 
     [Fact]
@@ -62,7 +68,7 @@ public class ShortIdTests
         ShortId.Reset();
         var options = new ShortIdOptions(useNumbers: false, useSpecialCharacters: false, length: 100);
         var response = ShortId.Generate(options);
-        response.Any(char.IsNumber).ShouldBeFalse();
+        response.Any(char.IsNumber).Verify().ToBeFalse();
     }
 
     [Fact]
@@ -71,7 +77,7 @@ public class ShortIdTests
         ShortId.Reset();
         var options = new ShortIdOptions(useNumbers: false, useSpecialCharacters: false, length: 100);
         var response = ShortId.Generate(options);
-        response.Any(c => Constants.Specials.Contains(c)).ShouldBeFalse();
+        response.Any(c => Constants.Specials.Contains(c)).Verify().ToBeFalse();
     }
 
     [Fact]
@@ -82,22 +88,25 @@ public class ShortIdTests
         ShortId.SetCharacters(newChars);
         var result = ShortId.Generate(new ShortIdOptions(length: 10));
 
-        result.ShouldNotBeNullOrEmpty();
-        result.Length.ShouldBe(10);
+        result.Verify().NotToBeNull();
+        result.Verify().NotToBeEmpty();
+        result.Length.Verify().ToBe(10);
     }
 
     [Fact]
     public void SetCharacters_WithEmptyString_ThrowsArgumentException()
     {
         var invalidChars = string.Empty;
-        Should.Throw<ArgumentException>(() => ShortId.SetCharacters(invalidChars));
+        Action act = () => ShortId.SetCharacters(invalidChars);
+        act.Throws<ArgumentException>();
     }
 
     [Fact]
     public void SetCharacters_WithTooFewUniqueCharacters_ThrowsInvalidOperationException()
     {
         var tooFewChars = "ABC";
-        Should.Throw<InvalidOperationException>(() => ShortId.SetCharacters(tooFewChars));
+        Action act = () => ShortId.SetCharacters(tooFewChars);
+        act.Throws<InvalidOperationException>();
     }
 
     [Fact]
@@ -107,7 +116,8 @@ public class ShortIdTests
         const string charSet =
             " Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ  Ⓐ  ⓛ ⓜ ⑩⑫ Ⓐ ";
 
-        Should.Throw<InvalidOperationException>(() => { ShortId.SetCharacters(charSet); });
+        Action act = () => ShortId.SetCharacters(charSet);
+        act.Throws<InvalidOperationException>();
     }
 
     [Fact]
@@ -122,7 +132,7 @@ public class ShortIdTests
         var resultTwo = ShortId.Generate(options);
 
         // results should be the same
-        resultOne.ShouldBe(resultTwo);
+        resultOne.Verify().ToBe(resultTwo);
     }
 
     [Fact]
@@ -130,7 +140,8 @@ public class ShortIdTests
     {
         const string characters =
             "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ①②③④⑤⑥⑦⑧⑨⑩⑪⑫";
-        Should.NotThrow(() => { ShortId.SetCharacters(characters); });
+        Action act = () => ShortId.SetCharacters(characters);
+        act.NotThrow();
     }
 
     [Fact]
@@ -144,7 +155,8 @@ public class ShortIdTests
         ShortId.Reset();
         var result = ShortId.Generate(options);
 
-        result.ShouldNotBeNullOrEmpty();
-        result.Length.ShouldBe(10);
+        result.Verify().NotToBeNull();
+        result.Verify().NotToBeEmpty();
+        result.Length.Verify().ToBe(10);
     }
 }

@@ -1,5 +1,5 @@
 using shortid.Utils;
-using Shouldly;
+using OmniAssert;
 using Xunit;
 
 namespace shortid.Test;
@@ -13,13 +13,13 @@ public class ShortIdOptionsTests
 
         options
             .Length
-            .ShouldBeGreaterThan(0);
+            .Verify().ToBeGreaterThan(0);
         options
             .UseNumbers
-            .ShouldBeFalse();
+            .Verify().ToBeFalse();
         options
             .UseSpecialCharacters
-            .ShouldBeTrue();
+            .Verify().ToBeTrue();
     }
 
     [Fact]
@@ -27,7 +27,7 @@ public class ShortIdOptionsTests
     {
         var options = new ShortIdOptions();
 
-        options.Length.ShouldBe(Constants.DefaultOutputLength);
+        options.Length.Verify().ToBe(Constants.DefaultOutputLength);
     }
 
     [Fact]
@@ -41,12 +41,12 @@ public class ShortIdOptionsTests
 
         options
             .Length
-            .ShouldBe(length);
+            .Verify().ToBe(length);
         options
             .UseNumbers
-            .ShouldBe(useNumbers);
+            .Verify().ToBeTrue();
         options
             .UseSpecialCharacters
-            .ShouldBe(useSpecial);
+            .Verify().ToBeFalse();
     }
 }
