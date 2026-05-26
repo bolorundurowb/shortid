@@ -1,4 +1,12 @@
-# ShortID 🆔
+<div align="center">
+  <img
+    height="150"
+    width="150"
+    src="https://raw.githubusercontent.com/bolorundurowb/shortid/refs/heads/master/assets/logo.svg"
+    alt="shortID logo"  />
+</div>
+
+# ShortID
 
 [![Build, Test & Coverage](https://github.com/bolorundurowb/shortid/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/bolorundurowb/shortid/actions/workflows/build-and-test.yml) [![codecov](https://codecov.io/gh/bolorundurowb/shortid/graph/badge.svg?token=XBA3CK3YIS)](https://codecov.io/gh/bolorundurowb/shortid) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) ![NuGet Version](https://img.shields.io/nuget/v/shortid)
 
