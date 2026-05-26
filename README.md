@@ -31,7 +31,7 @@ dotnet add package shortid
 **PackageReference** (pin the version you want from [NuGet](https://www.nuget.org/packages/shortid/))
 
 ```xml
-<PackageReference Include="shortid" Version="5.0.0" />
+<PackageReference Include="shortid" Version="5.1.1" />
 ```
 
 ## Usage
